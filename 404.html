@@ -1,0 +1,58 @@
+---
+layout: base
+---
+<style>
+.error-404-page {
+  background-color: #000;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  text-align: center;
+  padding: 2rem;
+}
+
+.error-404-content h1 {
+  font-size: 8rem;
+  font-weight: bold;
+  margin: 0;
+  line-height: 1;
+  color: white;
+}
+
+.error-404-content .targz-image {
+  max-width: 400px;
+  width: 100%;
+  height: auto;
+  margin: 2rem auto;
+  display: block;
+}
+
+.error-404-content p {
+  font-size: 1.5rem;
+  margin: 1rem 0;
+  color: #ccc;
+}
+
+.error-404-content a {
+  color: white;
+  text-decoration: underline;
+  font-size: 1.2rem;
+  margin-top: 2rem;
+  display: inline-block;
+}
+
+.error-404-content a:hover {
+  color: #ddd;
+}
+</style>
+
+<div class="error-404-page">
+  <div class="error-404-content">
+    <h1>Oups !</h1>
+    <img src="{{ '/assets/images/footer-targz.webp' | relative_url }}" alt="Targz" class="targz-image" />
+    <p>404 page not found</p>
+  </div>
+</div>
+

@@ -1,0 +1,40 @@
+<head>
+<!--
+ .-') _      ('-.     _  .-')                 .-') _             _  .-')   
+(  OO) )    ( OO ).-.( \( -O )               (  OO) )           ( \( -O )  
+/     '._   / . --. / ,------.   ,----.    ,(_)----.     ,------.,------.  
+|'--...__)  | \-.  \  |   /`. ' '  .-./-') |       |  ('-| _.---'|   /`. ' 
+'--.  .--'.-'-'  |  | |  /  | | |  |_( O- )'--.   /   (OO|(_\    |  /  | | 
+   |  |    \| |_.'  | |  |_.' | |  | .--, \(_/   /    /  |  '--. |  |_.' | 
+   |  |     |  .-.  | |  .  '.'(|  | '. (_/ /   /___  \_)|  .--' |  .  '.' 
+   |  |     |  | |  | |  |\  \  |  '--'  | |        |.-.\|  |_)  |  |\  \  
+   `--'     `--' `--' `--' '--'  `------'  `--------'`-' `--'    `--' '--'
+-->
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <meta name="author" content="Targz">
+  <meta name="copyright" content="© Targz. All rights reserved.">
+  <meta name="keywords" content="Targz, pen plotter art, algorithmic art, generative art, Op Art, plotter drawing, pen plotting, contemporary art, geometric abstraction, original artwork">
+  <link rel="alternate" type="text/plain" href="{{ '/llms.txt' | relative_url }}" title="LLM context">
+  
+  {% if site.google_analytics %}
+  <!-- Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id={{ site.google_analytics }}"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', '{{ site.google_analytics }}');
+  </script>
+  {% endif %}
+  
+  {% seo %}
+  <!-- Pico CSS - Local copy -->
+  <link rel="stylesheet" href="{{ '/assets/css/pico.min.css' | relative_url }}" data-theme="light">
+  
+  <!-- Custom styles -->
+  <link rel="stylesheet" href="{{ '/assets/css/style.css' | relative_url }}?v={{ site.time | date: '%s' }}">
+
+  {%- include custom_head.html -%}
+</head>

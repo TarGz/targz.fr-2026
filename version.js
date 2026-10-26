@@ -1,0 +1,410 @@
+const VERSION = "1.26.0";
+
+const CHANGELOG = [
+  {
+    version: "1.26.0",
+    date: "2026-10-22",
+    changes: [
+      "Menu overlay background gets the artwork CRT treatment: rgb-split filter, RGB sub-pixel stripes and pixel grid over a lightened headerbg2",
+      "Footer portrait gets the same CRT treatment",
+      "rgb-split filter moved from the portfolio layout to navbar.html so every page can use it",
+      "Menu nav links: solid white, larger, dark halo for readability"
+    ]
+  },
+  {
+    version: "1.25.1",
+    date: "2026-10-21",
+    changes: [
+      "Fix the dome photo caption in the Comparaison 2026 post: it shows Plasama Churn, not Y2"
+    ]
+  },
+  {
+    version: "1.25.0",
+    date: "2026-10-20",
+    changes: [
+      "Y1 and Y2 say who they portray: Nettie Stevens and Lise Meitner, with the Matilda Effect story from the Rouen post",
+      "Add plotting and trimming photos to Strikes"
+    ]
+  },
+  {
+    version: "1.24.0",
+    date: "2026-10-20",
+    changes: [
+      "Add Rouen National Arts 2026 photos to Y1 and Y2: the pair on the wall, each piece alone, a close up and visitors",
+      "Add a plotting photo to Y1",
+      "Link both posts to the Rouen exhibition post"
+    ]
+  },
+  {
+    version: "1.23.0",
+    date: "2026-10-20",
+    changes: [
+      "Add four Comparaison 2026 Grand Palais photos to Plasama Churn, linked to the exhibition post",
+      "New .wide class for portfolio gallery images: full row at 16:9 for landscape room shots",
+      "Crop the setup photo to its right edge so the canvas shows in the 3:4 tile"
+    ]
+  },
+  {
+    version: "1.22.0",
+    date: "2026-10-11",
+    changes: [
+      "Load Adamina and Open Sans for real: the @font-face rules only lived in main.scss, which no layout links, so the whole site fell back to the system sans",
+      "Set headings in Adamina at regular weight, since Pico ignores --pico-font-family-heading",
+      "Reading column for exhibition, commission and bits posts: text held to 66ch and centred, images keep the full width",
+      "Body text 17px with 1.75 line height, lighter h2/h3 with more space above, uppercase tracked date and location line",
+      "Rewrite the rest of the Grand Palais post in first person (JARA, Rebecca Chou, the glass roof) and link the Synapses canvas",
+      "Link Billund Mono Sans from Fill The Blank",
+      "Rewrite Space Noodle body and the index, commissions and exhibitions meta descriptions without the generic AI phrasing"
+    ]
+  },
+  {
+    version: "1.21.0",
+    date: "2026-09-20",
+    changes: [
+      "Rewrite Behind The Lines, Plotter Fest and Rouen National Arts 2026 from Julien's own words, replacing the machine-written copy",
+      "Add missing description fields to Behind The Lines and Plotter Fest",
+      "Fix spelling in the E-tech spiral commission (I chose, Vasarely)"
+    ]
+  },
+  {
+    version: "1.20.1",
+    date: "2026-09-20",
+    changes: [
+      "Rename the Mother post file and add a redirect from the old color-wheel-chaos URL"
+    ]
+  },
+  {
+    version: "1.20.0",
+    date: "2026-09-20",
+    changes: [
+      "Replace the generated template description on 32 more portfolio pieces with Julien's own lines (typos fixed, French translated, nothing added)",
+      "Rewrite the 17 no-body pieces again to keep Julien's wording only, dropping the drafted shape lines",
+      "Rename Color Wheel Chaos to Mother",
+      "Empty description and body for Solenoid Green and Chromatic Interplay N°1, per Julien"
+    ]
+  },
+  {
+    version: "1.19.0",
+    date: "2026-09-20",
+    changes: [
+      "Replace the generated template description on the 17 portfolio pieces that had no body text, with the shape plus Julien's own line (Yoga, Octopus Family, Hawking Radiation, Blended Squares, Solenoid Green, Petroleum Kraken, Chromatic Interplay N°1 and N°7, Vinyl Impression N°2 and N°3, Chain, Jelly Man, Young Interferences, Golden Boy, Lattice, Dye With Me 2, Infinite Loop)"
+    ]
+  },
+  {
+    version: "1.18.0",
+    date: "2026-09-20",
+    changes: [
+      "Rewrite the 9 worst AI-written exhibition and commission posts from Julien's own facts (Twingo, A Plot in the Wild, Chunk of Maze, Plasma Convection Tryptch, Blended Squares Exhibition, Grand Palais, Bitcoin Genesis, Fill The Blank, Pen plotter Portrait)",
+      "Rewrite The Last Brain Cell and The Last Brain Cells descriptions"
+    ]
+  },
+  {
+    version: "1.17.0",
+    date: "2026-09-19",
+    changes: [
+      "Screen effect on the zoomed detail image of portfolio pages: soft pixel grid, RGB sub-pixel stripes and red/blue channel offset",
+      "Link 9 portfolio posts to their shop products (shopify_id): ARN Shot, Wave Expansion, Marietta Blau, Esther Lederberg, The Last Brain Cell, The Last Brain Cells, Expansion, Y1, Y2"
+    ]
+  },
+  {
+    version: "1.16.3",
+    date: "2026-09-19",
+    changes: [
+      "Merge Waves & Particles into Wave Expansion (plotter photo moved over, redirect from the old URL) and remove the Waves & Particles post",
+      "Remove the framed shot from Wave Expansion",
+      "Add exhibition photos to Crops and Fragmentation"
+    ]
+  },
+  {
+    version: "1.16.2",
+    date: "2026-09-19",
+    changes: [
+      "Scale home grid columns with the viewport on large screens (clamp 520px to 820px)",
+      "Add two plotter photos to ARN Shot and remove the framed packshot"
+    ]
+  },
+  {
+    version: "1.16.1",
+    date: "2026-09-19",
+    changes: [
+      "Re-fit Marietta Blau and Esther Lederberg previews to the square house geometry (1200x1326, preview_height)",
+      "Add size, support and pen to Waves & Particles"
+    ]
+  },
+  {
+    version: "1.16.0",
+    date: "2026-09-19",
+    changes: [
+      "Add Marietta Blau and Esther Lederberg portraits (Matildas series) with responsive images",
+      "Add Wave Expansion portfolio post with responsive images",
+      "Tighten ARN Shot description"
+    ]
+  },
+  {
+    version: "1.15.0",
+    date: "2026-09-19",
+    changes: [
+      "Add ARN Shot portfolio post with responsive images",
+      "Add size and support (Bristol/Canvas) front matter to all portfolio posts",
+      "Normalize portfolio ink values (Non Archival Ink, Acrylic, Archival Ink, Metallic Acrylic)",
+      "Show year, size, support and ink in the portfolio list, and size on artwork pages",
+      "Add size and support fields to the new_artwork.py post template",
+      "Sync CLAUDE.md with global versioning rules and document the new fields"
+    ]
+  },
+  {
+    version: "1.14.0",
+    date: "2026-08-01",
+    changes: [
+      "Re-fit the Y1 and Y2 previews to the house geometry: 743px artwork on a 1200px-wide canvas, so the squares stop reading 40% wider than every other piece",
+      "Crop square previews to their own height (1200x1326) and drive the card aspect-ratio from a new preview_height front matter key, instead of padding them out to portrait and leaving a hole in the grid",
+      "Anchor the home caption to the canvas bottom margin (22.5cqw) so the gap between artwork and title is identical at every column width — the fixed 4rem offset collided with the artwork once columns got narrow",
+      "Cap home grid columns at 520px and centre the grid",
+      "Set the home grid gap to 0",
+      "Document the preview image geometry in CLAUDE.md: 1200px canvas, 743px artwork, 323px top and 270px bottom margins, and the preview_height front matter key",
+      "Fix generate_responsive_images.py writing mobile/tablet variants to a flat path the templates never request",
+      "Cache-bust style.css with the build timestamp instead of a fixed ?v2, which was serving stale CSS after every change",
+      "Add TONE_OF_VOICE.md defining the artefact voice for piece descriptions: the shape, then what I see in it",
+      "Add DESCRIPTIONS.md mapping all 63 pieces from their current boilerplate description to the replacement"
+    ]
+  },
+  {
+    version: "1.13.0",
+    date: "2026-08-01",
+    changes: [
+      "Rework the portfolio hero: packshot at half width on the left, title, date, ink and intro text alongside it on the right",
+      "Split post content on the first image paragraph so the intro sits in the hero and the images stay in the 2-up grid",
+      "Stack the hero image above the text below 768px",
+      "Set Waves & Particles ink to Acrylic"
+    ]
+  },
+  {
+    version: "1.12.1",
+    date: "2026-08-01",
+    changes: [
+      "Fix portfolio image grid stacking in a single left column: kramdown wraps consecutive image lines in one paragraph, so the wrapper is now dissolved with display:contents and every image becomes its own grid cell"
+    ]
+  },
+  {
+    version: "1.12.0",
+    date: "2026-07-31",
+    changes: [
+      "Add Waves & Particles portfolio post with responsive images",
+      "Portfolio posts with 2+ body images now render them as a uniform 2-up grid, single column on mobile",
+      "Remove two dead image references (Monochrome Moiré N°2, Synapses Canvas)",
+      "Add the portfolio deck toolchain: prep_pptx_images.py, build_portfolio_pptx.js, generate_portfolio_pdf.py",
+      "Ignore generated deck outputs (tmp_pptx_imgs/, targz-portfolio.pdf/.pptx) and .psd sources"
+    ]
+  },
+  {
+    version: "1.11.1",
+    date: "2026-07-16",
+    changes: [
+      "Update Yoga images with final retouched packshot"
+    ]
+  },
+  {
+    version: "1.11.0",
+    date: "2026-07-16",
+    changes: [
+      "Add 6 archive pieces to portfolio: Harlequeen, Kraken Chromed, Kraken Gold, Octopus, Solenoid Orange, Solenoid Original",
+      "Rename 15 pieces with redirects: Queer Kraken, Petroleum Kraken, Lattice, Chain, Octopus Family, Solenoid Green, Blended Squares, Jelly Man, Paper Clipped, Hawking Radiation, Yoga, Infinite Loop, Young Interferences, Heptapod, Golden Boy",
+      "Delete duplicates: Blended Squares n°17, n°17 3 colors, n°20 GOLD, Unexpected Patterns (redirects to Harlequeen)",
+      "Fix Blended Squares n°34 (Yoga) images that showed n°33 artwork, restored from git history"
+    ]
+  },
+  {
+    version: "1.10.1",
+    date: "2026-07-05",
+    changes: [
+      "Restore The Last Brain Cells post and images"
+    ]
+  },
+  {
+    version: "1.10.0",
+    date: "2026-07-05",
+    changes: [
+      "Add The Last Brain Cell portfolio post with responsive images",
+      "Add Pillow fallback to new_artwork.py when cwebp is not installed",
+      "Document the artwork contribution workflow in README and CLAUDE.md",
+      "Remove invalid-dated draft duplicate (2026-06-31-the-last-brain-cells)"
+    ]
+  },
+  {
+    version: "1.9.1",
+    date: "2026-06-18",
+    changes: [
+      "Fix spelling and grammar in about.md"
+    ]
+  },
+  {
+    version: "1.9.0",
+    date: "2026-05-25",
+    changes: [
+      "Add install.sh bootstrap script (Homebrew Ruby + bundler + vendored gems)",
+      "Document local install/run flow in README"
+    ]
+  },
+  {
+    version: "1.8.1",
+    date: "2026-05-24",
+    changes: [
+      "Rename Grand Palais 2025 post title to Comparaison 2025, update preview image",
+      "Rename Art Capital 2026 post title to Comparaison 2026, update preview image",
+      "Add Lines By Lines CAYO exhibition photos (IMG_8280-8514)",
+      "Add preview images for Comparaison 2025, Comparaison 2026, Lines By Lines CAYO"
+    ]
+  },
+  {
+    version: "1.8.0",
+    date: "2026-05-24",
+    changes: [
+      "Add Rouen National Arts 2026 exhibition post (Biennale RNA, Halle aux Toiles)",
+      "Add Matilda's series: Y¹ Nettie Stevens, Y² Lise Meitner",
+      "Add post-columns-2 and col-text CSS classes for image+text two-column layout",
+      "Add image-columns-2 square variant for 1:1 aspect ratio",
+      "Add Y1 and Y2 artwork images and preview for RNA 2026 post"
+    ]
+  },
+  {
+    version: "1.7.2",
+    date: "2026-05-24",
+    changes: [
+      "Add Lines By Lines exhibition post (CAYO Paris Treize, October 2025)",
+      "Add CAYO Coffee Pack commission post",
+      "Add exhibition and commission images with responsive webp conversion"
+    ]
+  },
+  {
+    version: "1.7.1",
+    date: "2026-05-23",
+    changes: [
+      "Auto-generate llms.txt from Jekyll posts on every build via _plugins/generate_llms.rb",
+      "Remove static llms.txt (now managed by generator)"
+    ]
+  },
+  {
+    version: "1.7.0",
+    date: "2026-05-20",
+    changes: [
+      "Rewrite artist statement on about page",
+      "Add community shoutout and resource links (Drawingbots, vpype, grbl, Bantam Tools)",
+      "Add link to bits exploration page"
+    ]
+  },
+  {
+    version: "1.6.0",
+    date: "2026-04-16",
+    changes: [
+      "Add Art Capital 2026 exhibition post (Comparaison, Grand Palais)",
+      "Add responsive images for Art Capital 2026 (preview, dome, setup)"
+    ]
+  },
+  {
+    version: "1.5.1",
+    date: "2026-04-07",
+    changes: [
+      "Add llms.txt for LLM discoverability (artist bio, series, exhibitions, techniques)",
+      "Remove noai robots directive — welcome LLM indexing",
+      "Link llms.txt from HTML head for crawler discovery"
+    ]
+  },
+  {
+    version: "1.5.0",
+    date: "2026-04-07",
+    changes: [
+      "Rewrite README as artist portfolio with copyright and SEO keywords",
+      "Move dev documentation to CONTRIBUTING.md",
+      "Add copyright, author, and keyword meta tags to head",
+      "Strengthen footer copyright to explicitly cover artworks and images"
+    ]
+  },
+  {
+    version: "1.4.0",
+    date: "2026-04-07",
+    changes: [
+      "Add new portfolio artworks: Plasama Churn, Y1, Y2",
+      "Replace Synapses Canvas, Crops, Fragmentation preview images with correct framed versions"
+    ]
+  },
+  {
+    version: "1.3.1",
+    date: "2026-04-07",
+    changes: [
+      "Auto-clean portfolio_drop/ folders after processing in new_artwork.py",
+      "Update CLAUDE.md workflow docs to reflect cleanup step"
+    ]
+  },
+  {
+    version: "1.3.0",
+    date: "2026-04-07",
+    changes: [
+      "Add new portfolio artwork: Crops (2025-10-20)",
+      "Add new portfolio artwork: Fragmentation (2025-10-21)",
+      "Remove shop fields from new_artwork.py post template (shopify_id, stripe_url, price, stock)"
+    ]
+  },
+  {
+    version: "1.2.1",
+    date: "2026-04-07",
+    changes: [
+      "Add utility scripts: new_artwork.py, check_404_urls.py, organize_images.py, restructure_images.py",
+      "Gitignore temporary report files (*.csv, *_report.txt)"
+    ]
+  },
+  {
+    version: "1.2.0",
+    date: "2026-04-07",
+    changes: [
+      "Add all portfolio images in dated subfolder structure (42 artwork folders)",
+      "Add tablet responsive variants for bits, commissions, exhibitions, portfolio"
+    ]
+  },
+  {
+    version: "1.1.3",
+    date: "2026-04-07",
+    changes: [
+      "Simplify dev server flags (remove --incremental --verbose)",
+      "Remove orphaned synapses_canvas video file"
+    ]
+  },
+  {
+    version: "1.1.2",
+    date: "2026-04-07",
+    changes: [
+      "Update README with new image directory convention and project structure",
+      "Add portfolio_drop/ to .gitignore",
+      "Remove .jekyll-metadata from tracking"
+    ]
+  },
+  {
+    version: "1.1.1",
+    date: "2026-04-07",
+    changes: [
+      "Fix responsive image path generation in home layout for new subfolder structure"
+    ]
+  },
+  {
+    version: "1.1.0",
+    date: "2026-04-07",
+    changes: [
+      "Restructure all images into dated category subfolders (bits, commissions, exhibitions, portfolio)",
+      "Update image paths in all bits, commissions, and exhibitions posts",
+      "Move mobile/tablet responsive variants into matching subfolder structure"
+    ]
+  },
+  {
+    version: "1.0.0",
+    date: "2026-04-07",
+    changes: [
+      "Remove shop/product features from theme (specs, pricing, buy links)",
+      "Redesign navigation: logo left, shop button + burger right",
+      "Add fullscreen menu overlay with generative art background",
+      "Strip price/stock/stripe_url from all portfolio front matter",
+      "Delete Shopify/Stripe migration scripts and data files",
+      "Restore shop link in navbar and footer"
+    ]
+  }
+];
+
+module.exports = { VERSION, CHANGELOG };

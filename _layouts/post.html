@@ -1,0 +1,69 @@
+---
+layout: base
+---
+
+<!-- Breadcrumbs for all posts -->
+{% include breadcrumb.html %}
+
+{% if page.category == "portfolio" %}
+<!-- Portfolio layout: hero packshot at half width, title and intro alongside it.
+     Body text always precedes the image block, so the content splits on the first
+     image paragraph: everything before it is the intro, the rest is the gallery. -->
+{% assign intro = content | split: "<p><img" | first %}
+{% assign gallery = content | remove_first: intro %}
+
+<div class="portfolio-hero">
+    {% if page.image %}
+    <figure class="portfolio-hero-image">
+        <img src="{{ page.image | relative_url }}" alt="{{ page.title }}" />
+    </figure>
+    {% endif %}
+
+    <div class="portfolio-hero-text">
+        <div class="post-header">
+            <h1>{{ page.title }}
+                <span class="post-metadata">
+                    {{ page.date | date: "%B %d, %Y" }}{% if page.ink != "" and page.ink %} • {{ page.ink }}{% endif %}{% if page.size != "" and page.size %} • {{ page.size }}{% endif %}
+                </span>
+            </h1>
+        </div>
+
+        {{ intro }}
+    </div>
+</div>
+
+<!-- 2+ body images turn the gallery block into a uniform 2-up grid, see .portfolio-grid -->
+{% assign body_images = gallery | split: "<img" | size | minus: 1 %}
+<div class="content{% if body_images > 1 %} portfolio-grid{% endif %}">
+    {{ gallery }}
+</div>
+
+{% else %}
+<!-- Other categories layout -->
+<div style="padding: 0; margin: 0;">
+    
+    {% if page.image and page.category != "bits" and page.category != "exhibitions" and page.category != "commissions" %}
+    <figure style="text-align: center; margin: 0.5rem 0 1rem 0">
+        <img src="{{ page.image | relative_url }}" alt="{{ page.title }}" style="max-width: 100%; height: auto" />
+    </figure>
+    {% endif %}
+
+    <div class="content">
+        {% if page.category == "exhibitions" or page.category == "bits" or page.category == "commissions" %}
+        <div class="post-header">
+            <h1>{{ page.title }}</h1>
+            <p class="post-subtitle">
+                {% if page.category == "exhibitions" %}
+                    {{ page.date | date: "%B %d, %Y" }}{% if page.location %} • {{ page.location }}{% endif %}
+                {% elsif page.category == "bits" %}
+                    {{ page.date | date: "%B %d, %Y" }}
+                {% elsif page.category == "commissions" %}
+                    {{ page.date | date: "%B %d, %Y" }}
+                {% endif %}
+            </p>
+        </div>
+        {% endif %}
+        {{ content }}
+    </div>
+</div>
+{% endif %}

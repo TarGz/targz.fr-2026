@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="{{ page.lang | default: site.lang | default: "en" }}" data-theme="light">
+  {%- include head.html -%}
+
+  <body{% if page.category %} class="{{ page.category }}-post"{% endif %}>
+    {%- include navbar.html -%}
+
+    <main class="container">
+      {{ content }}
+    </main>
+
+    {% if page.category == "portfolio" and page.image %}
+    <!-- Portfolio detail image outside container -->
+    <figure class="portfolio-detail-image">
+      <!-- Chromatic aberration filter #rgb-split is defined once in _includes/navbar.html -->
+      <img src="{{ page.image | relative_url }}" alt="{{ page.title }} - Detail View" />
+    </figure>
+    {% endif %}
+
+    {%- include footer.html -%}
+  </body>
+</html>

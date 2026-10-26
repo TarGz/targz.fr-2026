@@ -1,0 +1,18 @@
+---
+layout: post
+title: "Green Lagoon"
+seo-title: "Green Lagoon - Algorithmic Pen Plotted Art | Targz"
+description: "Primordial soup emergence."
+date: 2024-03-24
+category: portfolio
+image: /assets/images/portfolio/2024-03-24-green-lagoon/green-lagoon-preview.webp
+ink: "Non Archival Ink"
+original_url: https://shop.targz.fr/blogs/targz-pen-plotter-portfolio/green-lagoon
+shopify_id: 8802390573395
+pen: "Ecoline Pen"
+frame: "Unframed"
+size: "A1 (59.4 x 84.1 cm)"
+support: "Bristol"
+---
+Primordial soup emergence.
+

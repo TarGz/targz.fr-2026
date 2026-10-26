@@ -1,0 +1,90 @@
+name: Minify HTML and Deploy
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+      
+    - name: Setup Ruby
+      uses: ruby/setup-ruby@v1
+      with:
+        ruby-version: '3.2'
+        bundler-cache: true
+        
+    - name: Setup Pages
+      uses: actions/configure-pages@v4
+      
+    - name: Build with Jekyll
+      run: bundle exec jekyll build --baseurl "${{ steps.pages.outputs.base_path }}"
+      env:
+        JEKYLL_ENV: production
+        
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18'
+        
+    - name: Install minifiers
+      run: |
+        npm install -g html-minifier-terser
+        npm install -g clean-css-cli
+        npm install -g uglify-js
+      
+    - name: Minify CSS files
+      run: |
+        find ./_site -name "*.css" -type f | while read file; do
+          echo "Minifying CSS: $file"
+          cleancss -o "$file" "$file"
+        done
+        
+    - name: Minify JS files
+      run: |
+        find ./_site -name "*.js" -type f | while read file; do
+          echo "Minifying JS: $file"
+          uglifyjs "$file" -o "$file" -c -m || echo "Skipped $file (might be already minified)"
+        done
+        
+    - name: Minify HTML files
+      run: |
+        find ./_site -name "*.html" -type f | while read file; do
+          echo "Minifying: $file"
+          html-minifier-terser \
+            --collapse-whitespace \
+            --remove-redundant-attributes \
+            --remove-script-type-attributes \
+            --remove-style-link-type-attributes \
+            --use-short-doctype \
+            --minify-css true \
+            --minify-js true \
+            --output "$file" "$file"
+        done
+        
+    - name: Verify minification
+      run: |
+        echo "Checking a sample file:"
+        head -3 ./_site/index.html
+        
+    - name: Upload artifact
+      uses: actions/upload-pages-artifact@v3
+      
+    - name: Deploy to GitHub Pages
+      id: deployment
+      uses: actions/deploy-pages@v4

@@ -1,0 +1,42 @@
+{% capture currentYear %}{{ 'now' | date: '%Y' }}{% endcapture %}
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-content">
+
+      <!-- Keep in Touch Section (centered) -->
+      <div class="footer-section footer-center">
+        <h3>Let's Keep in Touch</h3>
+        <div class="social-links">
+          <a href="https://instagram.com/targz" class="social-link" title="Instagram">
+            <img src="{{ '/assets/icons/instagram.svg' | relative_url }}" alt="Instagram" width="28" height="28">
+          </a>
+          <a href="https://www.reddit.com/user/_targz_/submitted/" class="social-link" title="Reddit">
+            <img src="{{ '/assets/icons/reddit.svg' | relative_url }}" alt="Reddit" width="28" height="28">
+          </a>
+          <a href="https://tiktok.com/@targz" class="social-link" title="TikTok">
+            <img src="{{ '/assets/icons/tiktok.svg' | relative_url }}" alt="TikTok" width="28" height="28">
+          </a>
+          <a href="https://shop.targz.fr" class="social-link" title="Shop">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M7 18c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12L8.1 13h7.45c.75 0 1.41-.41 1.75-1.03L21.7 4H5.21l-.94-2H1zm16 16c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/>
+            </svg>
+          </a>
+        </div>
+      </div>
+
+      <!-- Targz Picture Section -->
+      <div class="footer-section footer-image">
+        <div class="footer-avatar">
+          <img src="{{ '/assets/images/footer-targz.webp' | relative_url }}" alt="Targz" class="footer-avatar-img">
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Copyright -->
+    <div class="footer-bottom">
+      <p>© {{ currentYear }} {{ site.title }}. All artworks and images are copyrighted. All rights reserved.</p>
+    </div>
+  </div>
+</footer>

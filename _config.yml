@@ -1,0 +1,87 @@
+domain: targz.fr
+url: https://targz.fr
+baseurl: ""
+
+title: Targz - Pen Plotting & Generative Art
+email: contact@targz.fr
+author: 
+  name: Targz
+  twitter: targz
+
+description: >-
+  Pen plotting artist creating algorithmic Op Art and generative artworks. 
+  Explore mathematical patterns through precision plotting on bristol paper.
+
+lang: en
+
+plugins:
+  - jekyll-seo-tag
+  - jekyll-sitemap
+  - jekyll-redirect-from
+
+# Sass/SCSS settings
+sass:
+  style: compressed
+
+# Markdown and HTML optimization
+kramdown:
+  syntax_highlighter: rouge
+  syntax_highlighter_opts:
+    css_class: 'highlight'
+  input: GFM
+
+# Exclude from processing
+exclude:
+  - node_modules/
+  - .sass-cache/
+  - .jekyll-cache/
+  - gemfiles/
+  - Gemfile
+  - Gemfile.lock
+  - vendor/
+
+# Markdown processing
+markdown: kramdown
+
+# Analytics
+google_analytics: G-P0H24WCQG3
+
+# SEO settings
+logo: /assets/images/targz.webp
+twitter:
+  username: targz
+  card: summary_large_image
+
+social:
+  name: Targz
+  links:
+    - https://instagram.com/targz
+    - https://reddit.com/u/_targz_
+    - https://tiktok.com/@targz
+
+# Default SEO values
+defaults:
+  - scope:
+      path: ""
+      type: posts
+    values:
+      author: Targz
+      image: /assets/images/targz.webp
+  - scope:
+      path: ""
+      type: pages
+    values:
+      author: Targz
+      image: /assets/images/targz.webp
+
+color: "#13ccf9"
+
+# Permalink structure to maintain URLs despite subfolder organization  
+permalink: /:categories/:year/:month/:day/:title.html
+# disqus:
+#   shortname: example-com
+#
+rrss:
+  email: "example@example.cl"
+  telegram: "https://t.me/"
+  discord: "https://discord.com/"
