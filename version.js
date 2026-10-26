@@ -1,6 +1,13 @@
-const VERSION = "1.26.0";
+const VERSION = "1.26.1";
 
 const CHANGELOG = [
+  {
+    version: "1.26.1",
+    date: "2026-10-26",
+    changes: [
+      "Lightened header background (headerbg2-light) added in its mobile and tablet sizes"
+    ]
+  },
   {
     version: "1.26.0",
     date: "2026-10-22",
