@@ -1,6 +1,13 @@
-const VERSION = "1.26.1";
+const VERSION = "1.26.2";
 
 const CHANGELOG = [
+  {
+    version: "1.26.2",
+    date: "2026-11-17",
+    changes: [
+      "Home grid: artwork titles in Adamina serif, title case, matching the detail page"
+    ]
+  },
   {
     version: "1.26.1",
     date: "2026-10-26",

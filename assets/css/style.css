@@ -938,9 +938,9 @@ article .compact-code pre {
   right: 0;
   margin: 0;
   padding: 1rem;
+  font-family: 'Adamina', serif;
   font-size: 0.75rem;
   font-weight: normal;
-  text-transform: uppercase;
   text-align: center;
   background: transparent;
 }
@@ -964,6 +964,8 @@ article .compact-code pre {
 /* Super tiny subtitle for year */
 .home-item .subtitle {
   display: block;
+  font-family: 'OpenSans', sans-serif;
+  text-transform: uppercase;
   font-size: 0.5rem;
   margin-top: 0.2rem;
   opacity: 0.6;
