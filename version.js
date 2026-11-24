@@ -1,6 +1,13 @@
-const VERSION = "1.27.0";
+const VERSION = "1.27.1";
 
 const CHANGELOG = [
+  {
+    version: "1.27.1",
+    date: "2026-11-24",
+    changes: [
+      "/hello form plugged into Formspree (formspree_id set)"
+    ]
+  },
   {
     version: "1.27.0",
     date: "2026-11-24",
