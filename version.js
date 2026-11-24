@@ -1,6 +1,19 @@
-const VERSION = "1.26.2";
+const VERSION = "1.27.0";
 
 const CHANGELOG = [
+  {
+    version: "1.27.0",
+    date: "2026-11-24",
+    changes: [
+      "New /hello link-in-bio page on the targz-charte system: glitched griffe + Targz mark, Portfolio / Shop / About me buttons, 'Got a wild idea?' hook with a plotted arrow, 'Work with me' card that opens a Formspree form, latest pieces",
+      "Charte glitch module (assets/js/targz.js) and Knewave font added to the site",
+      "Footer rebuilt: centred and minimal, flat white Targz wordmark, small-caps links (incl. Contact to /hello), social icons, copyright",
+      "Footer social links moved to _includes/social_links.html",
+      "About page: portrait moved from the footer into a full-width black band, cropped below the drawstrings",
+      "GA events on /hello: hello_click (target) and hello_form_sent",
+      "formspree_id setting added to _config.yml"
+    ]
+  },
   {
     version: "1.26.2",
     date: "2026-11-17",

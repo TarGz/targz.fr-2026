@@ -1,0 +1,555 @@
+/* /hello — link-in-bio page, on the Targz graphical system (../targz-charte).
+   Black for looking, white for reading. The glitch is the only accent. */
+@font-face {
+  font-family: 'Knewave';
+  src: url('../fonts/Knewave-Regular.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: block;
+}
+
+.hz {
+  --black: #0B0B0D;
+  --paper: #FFFFFF;
+  --serif: "PT Serif", Georgia, serif;
+  --sans: "Open Sans", -apple-system, BlinkMacSystemFont, sans-serif;
+  --mono: "JetBrains Mono", ui-monospace, Menlo, monospace;
+  --pitch: 64px;
+  /* dark tokens (charte "dark bands") */
+  --fg: #E8E6E3; --fg-dim: #A3A19C; --fg-faint: #8E8C87;
+  --rule: rgba(255, 255, 255, 0.13);
+  --split-c: #68FCFD; --split-m: #FF3BE3;
+
+  margin: 0;
+  background: var(--black);
+  color: var(--fg);
+  font-family: var(--sans);
+  font-size: 15px;
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+}
+
+.hz-col {
+  max-width: 30rem;
+  margin-inline: auto;
+  padding-inline: max(16px, env(safe-area-inset-left, 0px));
+}
+
+.hz-sr {
+  position: absolute; width: 1px; height: 1px; overflow: hidden;
+  clip: rect(0 0 0 0); white-space: nowrap;
+}
+
+/* ---------- the header: white, the glitched mark (the glitch sits on white) ---------- */
+.hz-bed {
+  --fg: #15141A; --fg-dim: #55535C; --fg-faint: #636270;
+  --rule: rgba(11, 11, 13, 0.13);
+  background: var(--paper);
+  color: var(--fg);
+  padding: clamp(64px, 16vw, 112px) 0 clamp(32px, 8vw, 56px);
+  text-align: center;
+}
+
+.hz .hz-mark {
+  margin: 0 auto;
+  min-height: 72px;
+  display: grid;
+  place-items: center;
+}
+
+.hz-mark a { display: block; line-height: 0; text-decoration: none; }
+
+.hz-mark canvas {
+  display: block;
+  margin: 0 auto;
+  width: min(70%, 240px);
+  height: auto;
+  image-rendering: pixelated;
+}
+
+/* If Knewave or the module fails, never show a fallback-font mark: show the name in PT Serif. */
+.hz-mark:not(.is-drawn) canvas { display: none; }
+.hz-mark:not(.is-drawn) .hz-sr {
+  position: static; width: auto; height: auto; clip: auto;
+  font-family: var(--serif); font-weight: 700; font-size: 3rem; color: var(--fg);
+}
+
+.hz .hz-sub {
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--fg-dim);
+  margin: 2.2em 0 0;
+}
+
+.hz .hz-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6em;
+  margin: 1.2em 0 0;
+  padding: 0.35em 0.8em;
+  border: 1px solid var(--rule);
+  font-family: var(--mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.06em;
+  color: var(--fg);
+}
+
+.hz-status i {
+  width: 7px; height: 7px;
+  background: #12FF12;
+  box-shadow: -2px 0 #FF12FF, 2px 0 #12FFFF;
+}
+
+/* footer icons are white on dark; here they sit on white */
+.hz-bed .social-link { color: #121212; }
+.hz-bed .social-link img { filter: brightness(0); }
+
+.hz-socials .social-links {
+  justify-content: center;
+  gap: 1.75rem;
+  margin-top: 2.2em;
+}
+
+.hz-socials .social-link svg,
+.hz-socials .social-link img { width: 22px; height: 22px; }
+
+/* ---------- bands alternate: black (mark) / white (links) / black (pieces) / white (form) / black (foot) ---------- */
+.hz-go,
+.hz-paper {
+  --fg: #15141A; --fg-dim: #55535C; --fg-faint: #636270;
+  --rule: rgba(11, 11, 13, 0.13);
+  --lift: #F4F3F1;
+  background: var(--paper);
+  color: var(--fg);
+}
+
+/* ---------- white band: the links, solid black buttons ---------- */
+.hz-go {
+  padding: clamp(24px, 6vw, 40px) 0 clamp(64px, 14vw, 96px);
+}
+
+.hz-links {
+  display: grid;
+  gap: 12px;
+}
+
+.hz .hz-row {
+  display: grid;
+  grid-template-columns: 2.6em 1fr auto;
+  align-items: center;
+  padding: 1.05em 1.1em;
+  background: var(--black);
+  color: #fff;
+  text-decoration: none;
+  transition: transform 0.15s ease;
+}
+
+.hz-row b {
+  font-family: var(--mono);
+  font-weight: 400;
+  font-size: 0.7rem;
+  color: #8E8C87;
+}
+
+.hz-row span {
+  font-family: var(--serif);
+  font-weight: 700;
+  font-size: 1.35rem;
+  line-height: 1.1;
+  letter-spacing: -0.01em;
+}
+
+.hz-row i {
+  font-style: normal;
+  font-family: var(--mono);
+  font-size: 1.1rem;
+  color: #fff;
+  transition: transform 0.2s ease;
+}
+
+.hz .hz-row:hover,
+.hz .hz-row:focus-visible {
+  color: #fff;
+  transform: translateY(-2px);
+}
+
+
+.hz-row:hover i { transform: translateX(4px); }
+
+/* ---------- black band: latest pieces ---------- */
+.hz-latest {
+  --fg: #15141A; --fg-dim: #55535C; --fg-faint: #636270;
+  background: var(--paper);
+  color: var(--fg);
+  padding: clamp(36px, 8vw, 56px) 0 clamp(44px, 9vw, 64px);
+}
+
+.hz .hz-k {
+  font-family: var(--mono);
+  font-size: 0.64rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--fg-faint);
+  margin: 0 0 0.9em;
+}
+
+/* The latest piece large, the next two side by side. Artwork only, cropped out of
+   its white preview canvas, floating on black like a lit wall. */
+.hz-wall {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: clamp(28px, 7vw, 44px) clamp(14px, 4vw, 22px);
+  align-items: end;
+}
+
+.hz-thumb:first-child {
+  grid-column: 1 / -1;
+  width: min(100%, 360px);
+  justify-self: center;
+}
+
+/* the preview has 270/1200 of white under the artwork: tuck the caption into it */
+.hz-thumb .hz-cap { margin-top: -18%; text-align: center; }
+.hz-thumb b { text-align: center; }
+
+.hz .hz-thumb {
+  display: flex;
+  flex-direction: column;
+  color: var(--fg);
+  text-decoration: none;
+}
+
+/* The preview's own white canvas matches the band, so the image has no visible edge. */
+.hz-art {
+  display: block;
+  transition: transform 0.25s ease;
+}
+
+.hz-art img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.hz .hz-thumb:hover .hz-art { transform: translateY(-4px); }
+
+.hz-cap {
+  font-family: var(--serif);
+  font-size: 1rem;
+  line-height: 1.25;
+  margin-top: 0.9em;
+}
+
+.hz-thumb:first-child .hz-cap { font-size: 1.3rem; }
+
+.hz-thumb b {
+  font-family: var(--mono);
+  font-weight: 400;
+  font-size: 0.64rem;
+  color: var(--fg-faint);
+  margin-top: 0.25em;
+}
+
+/* ---------- paper: the form ---------- */
+.hz-paper {
+  --split-c: #00B5C4; --split-m: #D6009B;
+  padding: clamp(44px, 9vw, 72px) 0 clamp(48px, 10vw, 80px);
+  scroll-margin-top: 0;
+}
+
+.hz .hz-paper h2 {
+  font-family: var(--serif);
+  font-weight: 700;
+  font-size: clamp(1.6rem, 6vw, 2rem);
+  line-height: 1.1;
+  letter-spacing: -0.012em;
+  color: var(--fg);
+  margin: 0 0 1.2em;
+}
+
+.hz-paper form { display: grid; gap: 1.4em; }
+
+.hz .hz-paper label {
+  display: grid;
+  gap: 0.4em;
+  margin: 0;
+  color: var(--fg);
+}
+
+.hz-paper label > span {
+  font-family: var(--mono);
+  font-size: 0.64rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--fg-faint);
+}
+
+.hz .hz-paper input,
+.hz .hz-paper select,
+.hz .hz-paper textarea {
+  width: 100%;
+  margin: 0;
+  padding: 0.7em 0.8em;
+  font-family: var(--sans);
+  font-size: 1rem;
+  color: var(--fg);
+  background-color: var(--paper);
+  border: 1px solid var(--rule);
+  border-radius: 0;
+  box-shadow: none;
+  height: auto;
+}
+
+.hz .hz-paper input:focus,
+.hz .hz-paper select:focus,
+.hz .hz-paper textarea:focus {
+  outline: none;
+  border-color: var(--fg);
+  box-shadow: none;
+}
+
+.hz .hz-paper button {
+  width: 100%;
+  margin-top: 0.4em;
+  padding: 1em;
+  font-family: var(--mono);
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--paper);
+  background: var(--black);
+  border: 0;
+  border-radius: 0;
+  cursor: pointer;
+}
+
+.hz .hz-paper button:hover { opacity: 0.85; }
+.hz .hz-paper button:disabled { opacity: 0.5; cursor: wait; }
+
+.hz .hz-gotcha { display: none !important; }
+
+.hz .hz-form-status {
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  color: var(--fg-dim);
+  text-align: center;
+  margin: 0;
+  min-height: 1.2em;
+}
+
+/* the site footer, flush under the last band */
+.hz .site-footer { margin-top: 0; }
+
+
+/* ---------- "Work with me": the button opens the form in place ---------- */
+.hz-work { margin-top: 0; }
+
+.hz .hz-work-btn {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 1em;
+  width: 100%;
+  margin: 0;
+  padding: 0.85em 1.1em 0.85em 0.85em;
+  background: var(--lift);
+  color: var(--fg);
+  border: 1px solid var(--rule);
+  border-radius: 0;
+  text-align: left;
+  cursor: pointer;
+  transition: transform 0.15s ease;
+}
+
+.hz .hz-work-btn:hover { transform: translateY(-2px); }
+.hz .hz-work-btn[aria-expanded="true"] { transform: none; }
+
+.hz-work-icon {
+  display: grid;
+  place-items: center;
+  width: 3.1em;
+  height: 3.1em;
+  background: var(--black);
+}
+
+.hz-work-icon svg {
+  width: 1.7em;
+  height: 1.7em;
+  fill: none;
+  stroke: #fff;
+  stroke-width: 1.8;
+  stroke-linejoin: round;
+  stroke-linecap: round;
+}
+
+.hz-work-text { display: grid; gap: 0.15em; }
+
+.hz-work-text strong {
+  font-family: var(--serif);
+  font-weight: 700;
+  font-size: 1.35rem;
+  line-height: 1.1;
+  letter-spacing: -0.01em;
+}
+
+.hz-work-text small {
+  font-family: var(--mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.04em;
+  color: var(--fg-dim);
+}
+
+
+.hz-work-chev {
+  width: 1.3em;
+  height: 1.3em;
+  fill: none;
+  stroke: var(--fg);
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  transition: transform 0.25s ease;
+}
+
+.hz-work-btn[aria-expanded="true"] .hz-work-chev { transform: rotate(180deg); }
+
+.hz .hz-work-panel {
+  padding: 1.6em 1.3em 1.5em;
+  background: var(--lift);
+  border: 1px solid var(--rule);
+  border-top: 0;
+  animation: hz-open 0.25s ease-out;
+}
+
+@keyframes hz-open {
+  from { opacity: 0; transform: translateY(-6px); }
+  to   { opacity: 1; transform: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hz .hz-work-panel { animation: none; }
+}
+
+/* Pico pads body > main, which let the black page show as a bar between the white bands */
+.hz > main { padding: 0; margin: 0; }
+
+.hz .hz-work-intro {
+  margin: 0 0 1.6em;
+  max-width: none;
+  font-family: var(--serif);
+  font-size: 1rem;
+  line-height: 1.5;
+  color: var(--fg);
+}
+
+/* ---------- the hook: big line + a plotted arrow down to "Work with me" ---------- */
+.hz-hook {
+  position: relative;
+  margin: 0 0 150px;   /* room for the glitch shape, clear of the arrow */
+  padding-right: 96px;
+  min-height: 104px;
+  display: flex;
+  align-items: center;
+}
+
+.hz .hz-hook p {
+  margin: 0;
+  font-family: var(--serif);
+  font-weight: 700;
+  font-style: italic;
+  font-size: clamp(1.9rem, 8vw, 2.6rem);
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+  color: var(--fg);
+}
+
+.hz-scribble {
+  position: absolute;
+  right: 18px;
+  top: 40px;
+  width: 80px;
+  height: 98px;
+  overflow: visible;
+}
+
+.hz-scribble path {
+  fill: none;
+  stroke: var(--fg);
+  stroke-width: 2.4;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-dasharray: 240;
+  stroke-dashoffset: 240;
+  animation: hz-plot 1.4s ease-out 0.4s forwards;
+}
+
+/* second pass: the pen going over it again, thinner and later */
+.hz-scribble path:nth-child(2),
+.hz-scribble path:nth-child(4) { stroke-width: 1.2; opacity: 0.7; animation-delay: 0.9s; }
+.hz-scribble path:nth-child(3),
+.hz-scribble path:nth-child(4) { stroke-dasharray: 60; stroke-dashoffset: 60; }
+.hz-scribble path:nth-child(3) { animation-delay: 1.5s; animation-duration: 0.4s; }
+.hz-scribble path:nth-child(4) { animation-delay: 1.8s; animation-duration: 0.4s; }
+
+@keyframes hz-plot { to { stroke-dashoffset: 0; } }
+
+@media (prefers-reduced-motion: reduce) {
+  .hz-scribble path { animation: none; stroke-dashoffset: 0; }
+}
+
+/* ---------- black band: the hook + "Work with me" ---------- */
+.hz-reach {
+  overflow-x: clip;   /* the wide glitch shape must never cause sideways scroll */
+  background: var(--black);
+  color: var(--fg);
+  padding: clamp(56px, 12vw, 88px) 0 clamp(120px, 24vw, 160px);
+}
+
+/* the card stays light on black */
+.hz-reach .hz-work {
+  --fg: #15141A; --fg-dim: #55535C; --fg-faint: #636270;
+  --rule: rgba(11, 11, 13, 0.13);
+  --lift: #F4F3F1;
+  color: var(--fg);
+}
+
+/* ---------- trashed edges (drawn by the script in _layouts/hello.html) ---------- */
+.hz-reach .hz-work {
+  position: relative;
+  isolation: isolate;
+}
+
+.hz-trash {
+  position: absolute;
+  z-index: -1;
+  pointer-events: none;
+  image-rendering: pixelated;
+  opacity: 0.95;
+}
+
+/* the card's own hairline would draw a clean rectangle over the ragged one */
+.hz-reach .hz .hz-work-btn,
+.hz-reach .hz-work-btn,
+.hz-reach .hz-work-panel { border-color: transparent; }
+
+canvas.hz-scribble,
+canvas.hz-work-chev { image-rendering: pixelated; opacity: 0.85; }
+
+/* the plotted arrow, now a glitched canvas: reveal it top to bottom like a pen */
+canvas.hz-scribble {
+  clip-path: inset(0 0 100% 0);
+  animation: hz-wipe 1.2s steps(14) 0.3s forwards;
+}
+canvas.hz-work-chev { transition: transform 0.25s ease; }
+.hz-work-btn[aria-expanded="true"] canvas.hz-work-chev { transform: rotate(180deg); }
+
+@keyframes hz-wipe { to { clip-path: inset(0 0 0 0); } }
+
+@media (prefers-reduced-motion: reduce) {
+  canvas.hz-scribble { animation: none; clip-path: none; }
+}
+
+canvas.hz-mail { image-rendering: auto; }

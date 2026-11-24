@@ -46,6 +46,9 @@ markdown: kramdown
 # Analytics
 google_analytics: G-P0H24WCQG3
 
+# Form endpoint for /hello — the ID from formspree.io (the part after /f/)
+formspree_id: ""
+
 # SEO settings
 logo: /assets/images/targz.webp
 twitter:

@@ -1,42 +1,56 @@
 {% capture currentYear %}{{ 'now' | date: '%Y' }}{% endcapture %}
 
 <footer class="site-footer">
-  <div class="container">
-    <div class="footer-content">
+  <div class="sf-inner">
 
-      <!-- Keep in Touch Section (centered) -->
-      <div class="footer-section footer-center">
-        <h3>Let's Keep in Touch</h3>
-        <div class="social-links">
-          <a href="https://instagram.com/targz" class="social-link" title="Instagram">
-            <img src="{{ '/assets/icons/instagram.svg' | relative_url }}" alt="Instagram" width="28" height="28">
-          </a>
-          <a href="https://www.reddit.com/user/_targz_/submitted/" class="social-link" title="Reddit">
-            <img src="{{ '/assets/icons/reddit.svg' | relative_url }}" alt="Reddit" width="28" height="28">
-          </a>
-          <a href="https://tiktok.com/@targz" class="social-link" title="TikTok">
-            <img src="{{ '/assets/icons/tiktok.svg' | relative_url }}" alt="TikTok" width="28" height="28">
-          </a>
-          <a href="https://shop.targz.fr" class="social-link" title="Shop">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
-              <path d="M7 18c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12L8.1 13h7.45c.75 0 1.41-.41 1.75-1.03L21.7 4H5.21l-.94-2H1zm16 16c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/>
-            </svg>
-          </a>
-        </div>
-      </div>
+    <a class="sf-id" href="{{ '/' | relative_url }}" id="footer-name" aria-label="Targz, home">
+      <canvas class="footer-mark" id="footer-mark" aria-hidden="true"></canvas>
+      <span class="footer-mark-text">Targz</span>
+    </a>
+    <p class="sf-tag">Pen plotter · Paris</p>
 
-      <!-- Targz Picture Section -->
-      <div class="footer-section footer-image">
-        <div class="footer-avatar">
-          <img src="{{ '/assets/images/footer-targz.webp' | relative_url }}" alt="Targz" class="footer-avatar-img">
-        </div>
-      </div>
-
+    <div class="sf-nav" role="navigation" aria-label="Footer">
+      <a href="{{ '/' | relative_url }}">Pen Plotting</a>
+      <a href="{{ '/about/' | relative_url }}">About</a>
+      <a href="{{ '/exhibitions/' | relative_url }}">Exhibitions</a>
+      <a href="{{ '/commissions/' | relative_url }}">Commissions</a>
+      <a href="https://shop.targz.fr">Shop</a>
+      <a href="{{ '/hello/' | relative_url }}">Contact</a>
     </div>
 
-    <!-- Copyright -->
-    <div class="footer-bottom">
-      <p>© {{ currentYear }} {{ site.title }}. All artworks and images are copyrighted. All rights reserved.</p>
-    </div>
+    {%- include social_links.html -%}
+
+    <p class="sf-copy">© {{ currentYear }} Targz · All artworks and images are copyrighted</p>
+
   </div>
 </footer>
+<script src="{{ '/assets/js/targz.js' | relative_url }}"></script>
+<script>
+/* Charte "footer-black" cut: no pixel blocks, no split, heavier erosion, z pulled down.
+   Never drawn with a fallback font: if Knewave fails, the canvas stays hidden. */
+(function () {
+  var cv = document.getElementById('footer-mark');
+  if (!cv || typeof TARGZ === 'undefined' || !document.fonts) return;
+  document.fonts.load('600px Knewave').then(function () {
+    if (!document.fonts.check('600px Knewave')) return;
+    var wm = TARGZ.wordmark({ size: 600, erode: 13, track: -0.04, tScale: 1.01, zAdjust: 0.6,
+                              barEnd: 0.57, barLeft: 1.15, barRight: 0.93, barSlope: 0.01,
+                              ink: '#FFFFFF', word: 'targz' });
+    // trim the wordmark's built-in padding to the ink
+    var x = wm.getContext('2d').getImageData(0, 0, wm.width, wm.height).data;
+    var x0 = wm.width, y0 = wm.height, x1 = 0, y1 = 0;
+    for (var y = 0; y < wm.height; y++) for (var i = 0; i < wm.width; i++) {
+      if (x[(y * wm.width + i) * 4 + 3] > 8) {
+        if (i < x0) x0 = i; if (i > x1) x1 = i; if (y < y0) y0 = y; if (y > y1) y1 = y;
+      }
+    }
+    if (x1 <= x0) return;
+    var w = x1 - x0 + 1, h = y1 - y0 + 1, H = 66;   // 3x the 22 px display height
+    cv.height = H; cv.width = Math.round(w * H / h);
+    var ctx = cv.getContext('2d');
+    ctx.imageSmoothingQuality = 'high';
+    ctx.drawImage(wm, x0, y0, w, h, 0, 0, cv.width, cv.height);
+    document.getElementById('footer-name').classList.add('is-drawn');
+  });
+})();
+</script>

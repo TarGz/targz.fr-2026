@@ -14,6 +14,11 @@ image: /assets/images/about-targz.webp
   <p>Pronounced however makes you happy</p>
 </hgroup>
 <br>
+<div class="about-band">
+<figure class="about-portrait">
+  <img src="/assets/images/footer-targz.webp" alt="Targz, portrait">
+</figure>
+</div>
 <br>
 <br>
 

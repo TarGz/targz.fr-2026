@@ -3,3 +3,10 @@ add anything here, e.g. favicons: 1. Head over to
 https://realfavicongenerator.net/ to add your own favicons. 2. Customize default
 _includes/custom-head.html in your source directory and insert the given code
 snippet. {% endcomment %}
+
+{% if page.layout == 'hello' %}
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&family=PT+Serif:wght@400;700&family=JetBrains+Mono:wght@400;700&display=swap">
+<link rel="stylesheet" href="{{ '/assets/css/hello.css' | relative_url }}?v={{ site.time | date: '%s' }}">
+{% endif %}

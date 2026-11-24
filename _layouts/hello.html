@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+{%- include head.html -%}
+{% comment %}
+  /hello — the link-in-bio page. Built on the Targz graphical system (../targz-charte):
+  white header with the glitched mark (the glitch sits on white), black band for the pieces, PT Serif titles,
+  Open Sans sentences, JetBrains Mono labels and numbers, the artist mark rendered
+  live by assets/js/targz.js (a copy of the charte module).
+  GA events: "hello_click" (param target) and "hello_form_sent".
+{% endcomment %}
+
+<body class="hz">
+
+  <header class="hz-bed">
+    <div class="hz-col">
+      <h1 class="hz-mark">
+        <a href="{{ '/' | relative_url }}" data-target="logo" aria-label="Targz, home">
+          <canvas id="hz-mark" aria-hidden="true"></canvas>
+          <span class="hz-sr">Targz</span>
+        </a>
+      </h1>
+      <p class="hz-sub">Pen plotter · Paris</p>
+      {% if page.status and page.status != "" %}
+      <p class="hz-status"><i></i>{{ page.status }}</p>
+      {% endif %}
+      <div class="hz-socials">
+        {%- include social_links.html -%}
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section class="hz-go">
+      <div class="hz-col hz-links" role="navigation" aria-label="Where to go">
+        <a class="hz-row" href="{{ '/' | relative_url }}" data-target="portfolio"><b>01</b><span>Portfolio</span><i>→</i></a>
+        <a class="hz-row" href="https://shop.targz.fr" data-target="shop"><b>02</b><span>Shop</span><i>→</i></a>
+        <a class="hz-row" href="{{ '/about/' | relative_url }}" data-target="about"><b>03</b><span>About me</span><i>→</i></a>
+      </div>
+    </section>
+
+    <section class="hz-reach">
+      <div class="hz-col">
+        <div class="hz-hook">
+          <p>Got a wild idea?</p>
+          <svg class="hz-scribble" viewBox="0 0 90 110" aria-hidden="true">
+            <path d="M14 8 C 52 4, 78 26, 62 50 C 50 68, 30 62, 36 48 C 42 36, 66 52, 60 98"/>
+            <path d="M15 10 C 50 7, 75 28, 60 51 C 49 66, 32 61, 37 49 C 44 38, 64 55, 59 97"/>
+            <path d="M44 84 L 60 99 L 74 80"/>
+            <path d="M46 86 L 59 97 L 72 82"/>
+          </svg>
+        </div>
+        <div class="hz-work">
+          <button type="button" class="hz-work-btn" aria-expanded="false" aria-controls="hz-form" data-target="contact">
+            <span class="hz-work-icon" aria-hidden="true">
+              <svg class="hz-mail" viewBox="0 0 24 24"><path d="M3.5 5.5h17v13h-17z"/><path d="M4 7l8 6 8-6"/></svg>
+            </span>
+            <span class="hz-work-text">
+              <strong>Work with me</strong>
+              <small>Collab, commission, or just hi</small>
+            </span>
+            <svg class="hz-work-chev" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
+          </button>
+          <div id="hz-form" class="hz-work-panel hz-paper" hidden>
+          <p class="hz-work-intro">Collabs, commissions, shows, weird ideas. I'm in. Tell me.</p>
+          <form action="https://formspree.io/f/{{ site.formspree_id }}" method="POST">
+            <label><span>Your email</span><input type="email" name="email" required autocomplete="email"></label>
+            <label><span>What's up?</span><textarea name="message" rows="4" required placeholder="Tell me about it…"></textarea></label>
+            <input type="text" name="_gotcha" class="hz-gotcha" tabindex="-1" autocomplete="off" aria-hidden="true">
+            <button type="submit">Send</button>
+            <p class="hz-form-status" role="status" aria-live="polite"></p>
+          </form>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="hz-latest" aria-label="Latest artworks">
+      <div class="hz-col">
+        <p class="hz-k">Latest pieces</p>
+        <div class="hz-wall">
+        {% assign latest = site.posts | where: "category", "portfolio" %}
+        {% for post in latest limit: 3 %}
+          {% assign img_parts = post.image | split: '/' %}
+          {% assign img_filename = img_parts | last %}
+          {% assign img_subpath = post.image | remove: '/assets/images/' | remove: img_filename %}
+          {% assign base_name = img_filename | replace: '-preview.webp', '' | replace: '_preview.webp', '' | replace: '.webp', '' %}
+          {% assign tablet_image = '/assets/images/tablet/' | append: img_subpath | append: base_name | append: '.webp' %}
+          {% comment %}The whole preview, uncropped: its white canvas melts into the white band.{% endcomment %}
+          {% assign preview_h = post.preview_height | default: 1687 %}
+          <a class="hz-thumb" href="{{ post.url | relative_url }}" data-target="artwork">
+            <span class="hz-art" style="aspect-ratio: 1200/{{ preview_h }};">
+              <img src="{{ tablet_image | relative_url }}" alt="{{ post.title }}" loading="lazy" decoding="async">
+            </span>
+            <span class="hz-cap">{{ post.title }}</span>
+            <b>{{ post.date | date: "%Y" }}</b>
+          </a>
+        {% endfor %}
+        </div>
+      </div>
+    </section>
+  </main>
+
+  {%- include footer.html -%}
+
+<script>
+/* The mark: the charte's "The mark" cut (glitch-white: griffe + wordmark, spread fringe,
+   white ground) with the artist word "targz". Same numbers as renderMark() in
+   targz-charte/js/ui.js, rendered at 380 px so shift and pixel stay in real pixels. */
+(function () {
+  var cv = document.getElementById('hz-mark');
+  if (!cv || typeof TARGZ === 'undefined' || !document.fonts) return;
+  var INK = '#121212', BG = '#FFFFFF';
+  var P = { erode: 8, shift: 14, pixel: 9, blur: 0, scan: 0, griffe: 0.94, gap: 36, tratio: 0.99, ty: 25 };  // matched to the reference: chunky pixels, word ink ~0.87 of the circle, open gap, word sits low
+  var H = 380, pad = 20;
+
+  var griffe = new Image();
+  var griffeReady = new Promise(function (r) { griffe.onload = r; griffe.onerror = r; });
+  griffe.src = '{{ "/assets/images/griffe.png" | relative_url }}';
+
+  Promise.all([document.fonts.load('600px Knewave'), griffeReady]).then(function () {
+    if (!document.fonts.check('600px Knewave') || !griffe.naturalWidth) return;  // never ship a wrong mark
+
+    // griffe: white ground knocked out, strokes in ink (stripWhite + tintGriffe in the charte)
+    var g0 = document.createElement('canvas');
+    g0.width = griffe.naturalWidth; g0.height = griffe.naturalHeight;
+    var gx = g0.getContext('2d', { willReadFrequently: true });
+    gx.drawImage(griffe, 0, 0);
+    var id = gx.getImageData(0, 0, g0.width, g0.height), d = id.data;
+    for (var i = 0; i < d.length; i += 4) {
+      var lum = (d[i] + d[i + 1] + d[i + 2]) / 765;
+      d[i + 3] = Math.round(d[i + 3] * (1 - lum));
+      d[i] = 18; d[i + 1] = 18; d[i + 2] = 18;
+    }
+    gx.putImageData(id, 0, 0);
+
+    var wm = TARGZ.wordmark({ size: 600, erode: P.erode, track: -0.04, tScale: 1.01, zAdjust: 0.9,
+                              barEnd: 0.57, barLeft: 1.15, barRight: 0.93, barSlope: 0.01,
+                              ink: INK, word: 'targz' });
+    var tH = Math.round(H * P.tratio);
+    var tW = Math.round(wm.width * tH / wm.height);
+    var gH = Math.round(H * P.griffe);
+    var gW = Math.round(g0.width * gH / g0.height);
+
+    cv.width = pad + gW + P.gap + tW + pad;
+    cv.height = H + pad * 2;
+    var ctx = cv.getContext('2d');
+    ctx.fillStyle = BG;
+    ctx.fillRect(0, 0, cv.width, cv.height);
+
+    var glitch = { mode: 'mark', shift: P.shift, blur: P.blur, scan: P.scan, pixel: P.pixel,
+                   base: BG, ink: INK, clip: 'spread' };
+
+    var g = document.createElement('canvas');
+    g.width = gW; g.height = gH;
+    g.getContext('2d').drawImage(g0, 0, 0, gW, gH);
+    TARGZ.apply(g, Object.assign({}, glitch, { shift: Math.max(0, P.shift - 1) }));
+    ctx.drawImage(g, pad, pad + (H - gH) / 2);
+
+    var plate = document.createElement('canvas');
+    plate.width = tW; plate.height = tH;
+    var pc = plate.getContext('2d', { willReadFrequently: true });
+    pc.imageSmoothingQuality = 'high';
+    pc.drawImage(wm, 0, 0, tW, tH);
+    TARGZ.apply(plate, glitch);
+    ctx.imageSmoothingEnabled = false;
+    ctx.drawImage(plate, pad + gW + P.gap, pad + (H - tH) / 2 + P.ty);
+
+    cv.closest('.hz-mark').classList.add('is-drawn');
+  });
+})();
+
+/* Trash the edges like the mark: a ragged, not-quite-rectangular silhouette behind the
+   "Work with me" card, and the plotted arrow + chevron, all pushed through the charte's
+   glitch (pixelate + channel split). Drawn at 1 CSS px per px so the blocks stay chunky. */
+(function () {
+  if (typeof TARGZ === 'undefined') return;
+
+  function rand(seed) { return function () { seed = (seed * 16807) % 2147483647; return (seed - 1) / 2147483646; }; }
+
+  function cardGlitch(wrap) {
+    var old = wrap.querySelector('.hz-trash'); if (old) old.remove();
+    var w = wrap.offsetWidth, h = wrap.offsetHeight, pad = 90, B = 8;
+    var cv = document.createElement('canvas');
+    cv.className = 'hz-trash';
+    cv.width = w + pad * 2; cv.height = h + pad * 2;
+    var ctx = cv.getContext('2d', { willReadFrequently: true });
+    var r = rand(7 + w * 3 + h);
+    // a skewed quad: each corner pushed out a different amount, so every edge runs on a
+    // slight slant and the pixelation turns it into stair steps, like the mark
+    var k = function (lo, hi) { return lo + Math.round(r() * (hi - lo)); };
+    var pts = [
+      [-k(56, 76),     -k(40, 48)],
+      [w + k(36, 52),  -k(54, 64)],
+      [w + k(56, 76),  h + k(40, 48)],
+      [-k(40, 56),     h + k(54, 64)]
+    ];
+    ctx.translate(pad, pad);
+    ctx.beginPath();
+    pts.forEach(function (p, i) { i ? ctx.lineTo(p[0], p[1]) : ctx.moveTo(p[0], p[1]); });
+    ctx.closePath();
+    ctx.fillStyle = '#F4F3F1';
+    ctx.fill();
+    ctx.setTransform(1, 0, 0, 1, 0, 0);
+    TARGZ.apply(cv, { mode: 'mark', shift: 5, pixel: B, blur: 0, scan: 0,
+                      base: '#0B0B0D', ink: '#F4F3F1', clip: 'spread' });
+    cv.style.left = cv.style.top = (-pad) + 'px';
+    wrap.prepend(cv);
+  }
+
+  function svgGlitch(svg, opts) {
+    var vb = svg.viewBox.baseVal, bb = svg.getBoundingClientRect(), w = Math.round(bb.width), h = Math.round(bb.height);
+    if (!w || !h) return;
+    var S = opts.scale || 1, pad = opts.pad, cv = document.createElement('canvas');
+    cv.width = (w + pad * 2) * S; cv.height = (h + pad * 2) * S;
+    var ctx = cv.getContext('2d', { willReadFrequently: true });
+    ctx.translate(pad * S, pad * S);
+    ctx.scale(w * S / vb.width, h * S / vb.height);
+    ctx.strokeStyle = opts.ink; ctx.lineWidth = opts.stroke * vb.width / w;
+    ctx.lineCap = ctx.lineJoin = 'round';
+    svg.querySelectorAll('path').forEach(function (p) { ctx.stroke(new Path2D(p.getAttribute('d'))); });
+    ctx.setTransform(1, 0, 0, 1, 0, 0);
+    TARGZ.apply(cv, { mode: 'mark', shift: opts.shift, pixel: opts.pixel, blur: 0, scan: 0,
+                      base: opts.base, ink: opts.ink, clip: 'spread' });
+    cv.className = svg.getAttribute('class') + ' is-glitch';
+    cv.style.width = (w + pad * 2) + 'px'; cv.style.height = (h + pad * 2) + 'px';
+    cv.style.margin = (-pad) + 'px';
+    svg.replaceWith(cv);
+  }
+
+  (function () {
+    var wrap = document.querySelector('.hz-reach .hz-work');
+    var arrow = document.querySelector('.hz-reach .hz-scribble');
+    var chev = document.querySelector('.hz-reach .hz-work-chev');
+    if (arrow) svgGlitch(arrow, { pad: 12, stroke: 5, pixel: 5, shift: 4, ink: '#FFFFFF', base: '#0B0B0D' });
+    var mail = document.querySelector('.hz-reach .hz-mail');
+    if (mail) svgGlitch(mail, { pad: 6, stroke: 2, scale: 3, pixel: 2, shift: 2, ink: '#FFFFFF', base: '#0B0B0D' });
+    if (chev) svgGlitch(chev, { pad: 6, stroke: 3, pixel: 3, shift: 2, ink: '#121212', base: '#F4F3F1' });
+    if (!wrap) return;
+    cardGlitch(wrap);
+    // the card grows when the form opens: redraw the silhouette to fit
+    if (window.ResizeObserver) {
+      var last = wrap.offsetHeight + 'x' + wrap.offsetWidth;
+      new ResizeObserver(function () {
+        var now = wrap.offsetHeight + 'x' + wrap.offsetWidth;
+        if (now !== last) { last = now; cardGlitch(wrap); }
+      }).observe(wrap);
+    }
+  })();
+})();
+
+document.addEventListener('DOMContentLoaded', function () {
+  function track(name, params) {
+    if (typeof gtag === 'function') gtag('event', name, params);
+  }
+
+  var workBtn = document.querySelector('.hz-work-btn');
+  var workPanel = document.getElementById('hz-form');
+  workBtn.addEventListener('click', function () {
+    var open = workBtn.getAttribute('aria-expanded') !== 'true';
+    workBtn.setAttribute('aria-expanded', open ? 'true' : 'false');
+    workPanel.hidden = !open;
+    if (open) workPanel.querySelector('input').focus({ preventScroll: true });
+  });
+
+  document.querySelectorAll('[data-target]').forEach(function (link) {
+    link.addEventListener('click', function () {
+      track('hello_click', { target: link.dataset.target });
+    });
+  });
+  document.querySelectorAll('.hz-socials a').forEach(function (link) {
+    link.addEventListener('click', function () {
+      track('hello_click', { target: (link.title || 'social').toLowerCase() });
+    });
+  });
+
+  var form = document.querySelector('#hz-form form');
+  var status = document.querySelector('.hz-form-status');
+  form.addEventListener('submit', function (e) {
+    e.preventDefault();
+    var button = form.querySelector('button');
+    button.disabled = true;
+    status.textContent = 'Sending…';
+    fetch(form.action, {
+      method: 'POST',
+      body: new FormData(form),
+      headers: { 'Accept': 'application/json' }
+    }).then(function (res) {
+      if (!res.ok) throw new Error(res.status);
+      track('hello_form_sent', {});
+      form.reset();
+      status.textContent = 'Sent. I’ll get back to you.';
+    }).catch(function () {
+      status.textContent = 'That didn’t go through. Try again, or write to me on Instagram.';
+    }).finally(function () {
+      button.disabled = false;
+    });
+  });
+});
+</script>
+</body>
+</html>
