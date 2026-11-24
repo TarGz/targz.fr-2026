@@ -288,7 +288,12 @@ document.addEventListener('DOMContentLoaded', function () {
       if (!res.ok) throw new Error(res.status);
       track('hello_form_sent', {});
       form.reset();
-      status.textContent = 'Sent. I’ll get back to you.';
+      status.textContent = '';
+      // close the card and leave the confirmation on the button itself
+      workBtn.setAttribute('aria-expanded', 'false');
+      workPanel.hidden = true;
+      var sub = workBtn.querySelector('.hz-work-text small');
+      if (sub) sub.textContent = 'Sent. I’ll get back to you.';
     }).catch(function () {
       status.textContent = 'That didn’t go through. Try again, or write to me on Instagram.';
     }).finally(function () {
