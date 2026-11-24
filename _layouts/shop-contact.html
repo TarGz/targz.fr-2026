@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+{%- include head.html -%}
+{% comment %}
+  /shop-contact — PROTOTYPE of the Shopify shop's contact page, to validate here before
+  porting it into the Shopify theme (page.contact template). Same card, glitch and form
+  behaviour as /hello (assets/js/hz.js + assets/css/hello.css). Not linked from the site.
+  In Shopify the form becomes Shopify's native contact form and messages go to the store inbox;
+  here it posts to Formspree so it can be tried locally.
+  GA events: "shop_contact_click" and "shop_contact_form_sent".
+{% endcomment %}
+
+<body class="hz" data-ga="shop_contact">
+
+  <main>
+    <section class="hz-reach hz-reach--page hz-reach--light">
+      <div class="hz-col">
+        <div class="hz-hook">
+          <p>A question? A commission?</p>
+          <svg class="hz-scribble" viewBox="0 0 90 110" aria-hidden="true">
+            <path d="M14 8 C 52 4, 78 26, 62 50 C 50 68, 30 62, 36 48 C 42 36, 66 52, 60 98"/>
+            <path d="M15 10 C 50 7, 75 28, 60 51 C 49 66, 32 61, 37 49 C 44 38, 64 55, 59 97"/>
+            <path d="M44 84 L 60 99 L 74 80"/>
+            <path d="M46 86 L 59 97 L 72 82"/>
+          </svg>
+        </div>
+        <div class="hz-work">
+          <div class="hz-work-btn hz-work-head">
+            <span class="hz-work-icon" aria-hidden="true">
+              <svg class="hz-mail" viewBox="0 0 24 24"><path d="M3.5 5.5h17v13h-17z"/><path d="M4 7l8 6 8-6"/></svg>
+            </span>
+            <span class="hz-work-text">
+              <strong>Write to me</strong>
+              <small>Orders, shipping, commissions</small>
+            </span>
+          </div>
+          <div id="hz-form" class="hz-work-panel hz-paper">
+          <p class="hz-work-intro">Feel free to contact me for a piece, an order, a commission, anything.</p>
+          <form action="https://formspree.io/f/{{ site.formspree_id }}" method="POST">
+            <label><span>Your email</span><input type="email" name="email" required autocomplete="email"></label>
+            <label><span>What's up?</span><textarea name="message" rows="4" required placeholder="Tell me about it…"></textarea></label>
+            <input type="text" name="_gotcha" class="hz-gotcha" tabindex="-1" autocomplete="off" aria-hidden="true">
+            <button type="submit">Send</button>
+            <p class="hz-form-status" role="status" aria-live="polite"></p>
+          </form>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  {%- include footer.html -%}
+
+<script src="{{ '/assets/js/hz.js' | relative_url }}"></script>
+</body>
+</html>

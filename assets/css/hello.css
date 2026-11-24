@@ -577,3 +577,15 @@ canvas.hz-mail { image-rendering: auto; }
   letter-spacing: 0.06em;
   color: var(--fg-dim);
 }
+
+/* ---------- /shop-contact prototype: the card is always open, its head is not a button ---------- */
+.hz-reach--page { padding-top: clamp(72px, 14vw, 120px); }
+.hz .hz-work-head { cursor: default; grid-template-columns: auto 1fr; }
+.hz .hz-work-head:hover { transform: none; }
+
+/* ---------- light version (shop: white for reading and buying) ---------- */
+.hz-reach--light {
+  --fg: #15141A; --fg-dim: #55535C; --fg-faint: #636270;
+  background: var(--paper);
+  color: var(--fg);
+}

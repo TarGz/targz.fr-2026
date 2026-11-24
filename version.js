@@ -1,6 +1,16 @@
-const VERSION = "1.27.3";
+const VERSION = "1.28.0";
 
 const CHANGELOG = [
+  {
+    version: "1.28.0",
+    date: "2026-11-24",
+    changes: [
+      "Contact link added to the burger menu (goes to /hello)",
+      "/shop-contact: unlinked prototype of the Shopify shop contact page (black, glitched Write to me card)",
+      "Card glitch, open/close and form send moved from the /hello layout into assets/js/hz.js, shared by both pages",
+      "hz.js: light-page mode (ink-on-paper glitch) and per-page GA event prefix via body data-ga"
+    ]
+  },
   {
     version: "1.27.3",
     date: "2026-11-24",
