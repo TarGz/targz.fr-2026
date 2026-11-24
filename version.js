@@ -1,6 +1,13 @@
-const VERSION = "1.27.2";
+const VERSION = "1.27.3";
 
 const CHANGELOG = [
+  {
+    version: "1.27.3",
+    date: "2026-11-24",
+    changes: [
+      "/hello: after sending, the form is replaced by a 'Message sent. I'll answer fast.' confirmation"
+    ]
+  },
   {
     version: "1.27.2",
     date: "2026-11-24",
