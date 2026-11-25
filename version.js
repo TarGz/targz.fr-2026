@@ -1,6 +1,15 @@
-const VERSION = "1.34.0";
+const VERSION = "1.35.0";
 
 const CHANGELOG = [
+  {
+    version: "1.35.0",
+    date: "2026-11-25",
+    changes: [
+      "Navbar logo is now the animated glitched @ (logo-griffe.gif)",
+      "Type unified site-wide: PT Serif headings, JetBrains Mono grey metadata, PT Serif home captions; Google Fonts loaded on every page",
+      "Open Sans trimmed to Regular, Italic and SemiBold (5.7 MB to 0.4 MB)"
+    ]
+  },
   {
     version: "1.34.0",
     date: "2026-11-25",

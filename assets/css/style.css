@@ -36,7 +36,7 @@
 /* Keep the font customizations */
 :root {
   --pico-font-family: 'OpenSans', sans-serif;
-  --pico-font-family-heading: 'Adamina', serif;
+  --pico-font-family-heading: "PT Serif", Georgia, serif;
 }
 
 /* Force light theme and fix navbar colors */
@@ -434,17 +434,20 @@ body.portfolio-post .content.portfolio-grid > p:has(img) img.wide {
 }
 
 .post-subtitle {
-  font-size: 0.8rem;
-  color: #666;
+  font-family: "JetBrains Mono", ui-monospace, Menlo, monospace;
+  font-size: 0.72rem;
+  color: #8E8C87;
   font-weight: normal;
-  letter-spacing: 0.08em;
+  letter-spacing: 0.06em;
   text-transform: uppercase;
 }
 
-/* Headings in Adamina. Pico ignores --pico-font-family-heading, so set it here. */
+/* Headings in the charte serif (PT Serif bold, loaded in custom_head.html).
+   Pico ignores --pico-font-family-heading, so set it here. */
 h1, h2, h3, h4, h5, h6 {
-  font-family: 'Adamina', serif;
-  font-weight: 400;
+  font-family: "PT Serif", Georgia, serif;
+  font-weight: 700;
+  letter-spacing: -0.01em;
 }
 
 /* Reading column for text posts. Text sits in a ~66 character measure,
@@ -508,8 +511,10 @@ body.commissions-post .content > p:has(img) {
 /* Portfolio post metadata - properly styled and centered */
 body.portfolio-post .post-metadata {
   display: block !important;
-  font-size: 0.8rem !important;
-  color: #666 !important;
+  font-family: "JetBrains Mono", ui-monospace, Menlo, monospace !important;
+  letter-spacing: 0.04em;
+  font-size: 0.72rem !important;
+  color: #8E8C87 !important;
   margin-top: 0.5rem !important;
   margin-bottom: 1.5rem !important;
   font-weight: normal !important;
@@ -1052,8 +1057,8 @@ article .compact-code pre {
   right: 0;
   margin: 0;
   padding: 1rem;
-  font-family: 'Adamina', serif;
-  font-size: 0.75rem;
+  font-family: "PT Serif", Georgia, serif;
+  font-size: 0.8rem;
   font-weight: normal;
   text-align: center;
   background: transparent;
@@ -1407,7 +1412,7 @@ body.nav-active nav {
 
 /* height drives the size; width follows the canvas's own ratio (never stretched) */
 .footer-mark { display: block; height: 20px; width: auto; }
-.footer-mark-text { display: none; font-family: 'Adamina', serif; font-size: 1.1rem; line-height: 1; color: #fff; }
+.footer-mark-text { display: none; font-family: "PT Serif", Georgia, serif; font-size: 1.1rem; line-height: 1; color: #fff; }
 .sf-id:not(.is-drawn) .footer-mark { display: none; }
 .sf-id:not(.is-drawn) .footer-mark-text { display: block; }
 
