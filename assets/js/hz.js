@@ -86,7 +86,10 @@
 })();
 
 document.addEventListener('DOMContentLoaded', function () {
+  // which link brought them: <body data-source="instagram"> (set per page: /ig, /tt, /rd)
+  var source = document.body.dataset.source;
   function track(name, params) {
+    if (source) params.source = source;
     if (typeof gtag === 'function') gtag('event', name, params);
   }
 

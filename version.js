@@ -1,6 +1,14 @@
-const VERSION = "1.28.0";
+const VERSION = "1.29.0";
 
 const CHANGELOG = [
+  {
+    version: "1.29.0",
+    date: "2026-11-25",
+    changes: [
+      "Per-platform bio links /ig, /tt, /rd: same page as /hello, kept out of the sitemap, canonical to /hello",
+      "hello_click and hello_form_sent events carry a source param (instagram, tiktok, reddit, hello)"
+    ]
+  },
   {
     version: "1.28.0",
     date: "2026-11-24",
