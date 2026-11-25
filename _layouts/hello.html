@@ -34,7 +34,8 @@
     <section class="hz-go">
       <div class="hz-col hz-links" role="navigation" aria-label="Where to go">
         <a class="hz-row" href="{{ '/' | relative_url }}" data-target="portfolio"><b>01</b><span>Portfolio</span><i>→</i></a>
-        <a class="hz-row" href="https://shop.targz.fr" data-target="shop"><b>02</b><span>Shop</span><i>→</i></a>
+        {%- comment -%}UTM tags so Shopify Analytics shows which platform's bio link brought the shop visit (and the sale).{%- endcomment -%}
+        <a class="hz-row" href="https://shop.targz.fr/?utm_source={{ page.source | default: 'hello' }}&amp;utm_medium=social&amp;utm_campaign=hello" data-target="shop"><b>02</b><span>Shop</span><i>→</i></a>
         <a class="hz-row" href="{{ '/about/' | relative_url }}" data-target="about"><b>03</b><span>About me</span><i>→</i></a>
       </div>
     </section>

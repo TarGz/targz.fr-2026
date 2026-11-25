@@ -1,6 +1,14 @@
-const VERSION = "1.30.2";
+const VERSION = "1.31.0";
 
 const CHANGELOG = [
+  {
+    version: "1.31.0",
+    date: "2026-11-25",
+    changes: [
+      "Hello pages: Shop button carries UTM tags (utm_source = platform, utm_medium=social, utm_campaign=hello) for Shopify sales attribution",
+      "Bitcoin Genesis close-up: 18 MB animated webp replaced by a 2 MB looping MP4 (25 fps) with a poster; unused 12 MB mobile copy removed"
+    ]
+  },
   {
     version: "1.30.2",
     date: "2026-11-25",
