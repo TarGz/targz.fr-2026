@@ -1,6 +1,14 @@
-const VERSION = "1.29.0";
+const VERSION = "1.30.0";
 
 const CHANGELOG = [
+  {
+    version: "1.30.0",
+    date: "2026-11-25",
+    changes: [
+      "Bio links for Bluesky (/bs), Pinterest (/pt), YouTube (/yt) and Threads (/th)",
+      "/hello pages send a hello_visit event (target: visit) and hello_form_sent carries target: message, for the GA 'Hello by platform' report"
+    ]
+  },
   {
     version: "1.29.0",
     date: "2026-11-25",

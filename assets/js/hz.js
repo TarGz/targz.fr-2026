@@ -86,7 +86,7 @@
 })();
 
 document.addEventListener('DOMContentLoaded', function () {
-  // which link brought them: <body data-source="instagram"> (set per page: /ig, /tt, /rd)
+  // which link brought them: <body data-source="instagram"> (set per page: /ig, /tt, /rd, /bs, /pt, /yt, /th)
   var source = document.body.dataset.source;
   function track(name, params) {
     if (source) params.source = source;
@@ -95,6 +95,8 @@ document.addEventListener('DOMContentLoaded', function () {
 
   // GA event prefix per page: <body data-ga="hello"> -> hello_click / hello_form_sent
   var ga = document.body.dataset.ga || 'hello';
+  // one landing event per visit, so the GA table (Platform x Clicked) shows visits next to clicks
+  track(ga + '_visit', { target: 'visit' });
 
   var workBtn = document.querySelector('button.hz-work-btn');
   var workPanel = document.getElementById('hz-form');
@@ -130,7 +132,7 @@ document.addEventListener('DOMContentLoaded', function () {
       headers: { 'Accept': 'application/json' }
     }).then(function (res) {
       if (!res.ok) throw new Error(res.status);
-      track(ga + '_form_sent', {});
+      track(ga + '_form_sent', { target: 'message' });
       form.reset();
       // swap the form for a clear confirmation, panel stays open
       workPanel.innerHTML = '<div class="hz-sent"><strong>Message sent.</strong><span>I’ll answer fast.</span></div>';
