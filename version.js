@@ -1,6 +1,14 @@
-const VERSION = "1.30.1";
+const VERSION = "1.30.2";
 
 const CHANGELOG = [
+  {
+    version: "1.30.2",
+    date: "2026-11-25",
+    changes: [
+      "Removed 17 unused source images (png/jpg kept next to their webp copies), -45 MB",
+      "92 oversized webps resized to 1200 px wide, 38 MB -> 21 MB"
+    ]
+  },
   {
     version: "1.30.1",
     date: "2026-11-25",
