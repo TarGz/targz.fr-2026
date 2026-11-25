@@ -1,6 +1,13 @@
-const VERSION = "1.30.0";
+const VERSION = "1.30.1";
 
 const CHANGELOG = [
+  {
+    version: "1.30.1",
+    date: "2026-11-25",
+    changes: [
+      "Deploy workflow waits 20 s between artifact upload and deploy (GitHub 'Found 0 artifact(s)' failures)"
+    ]
+  },
   {
     version: "1.30.0",
     date: "2026-11-25",

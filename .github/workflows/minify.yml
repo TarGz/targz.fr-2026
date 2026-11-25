@@ -85,6 +85,11 @@ jobs:
     - name: Upload artifact
       uses: actions/upload-pages-artifact@v3
       
+    # GitHub sometimes can't see the freshly uploaded artifact yet ("Found 0 artifact(s)");
+    # give it a moment before deploying.
+    - name: Wait for artifact
+      run: sleep 20
+
     - name: Deploy to GitHub Pages
       id: deployment
       uses: actions/deploy-pages@v4
