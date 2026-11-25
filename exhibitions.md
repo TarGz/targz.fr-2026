@@ -7,14 +7,10 @@ permalink: /exhibitions/
 image: /assets/images/targz.webp
 ---
 
-<br>
-<hgroup style="text-align: center">
-  <h2>Exhibitions</h2>
-  <p>Some of my last Exhibitions</p>
-</hgroup>
-<br>
-<br>
-<br>
+<header class="list-head">
+  <h1>Exhibitions</h1>
+  <p>Paris, Rouen, New York. And a few others.</p>
+</header>
 
 <section class="home-grid exhibitions-grid">
     {% for post in site.posts %} {% if post.category == "exhibitions" %}

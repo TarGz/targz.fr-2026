@@ -1,58 +1,117 @@
 ---
 layout: base
+title: Lost line - Targz
+sitemap: false
 ---
+{% comment %}
+  404: a giant "404" in the wordmark font (Knewave), pushed through the charte glitch
+  (assets/js/targz.js, loaded by the footer) on white, like the mark. It twitches between
+  a few pre-drawn cuts. Copy in the list-page type: PT Serif title, JetBrains Mono label.
+{% endcomment %}
 <style>
-.error-404-page {
-  background-color: #000;
-  min-height: 100vh;
+.e404 {
+  min-height: 72vh;
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
-  color: white;
   text-align: center;
-  padding: 2rem;
+  padding: 3rem 1.5rem 5rem;
+  background: #fff;
 }
-
-.error-404-content h1 {
-  font-size: 8rem;
-  font-weight: bold;
-  margin: 0;
-  line-height: 1;
-  color: white;
+.e404-k {
+  margin: 0 0 1.2rem;
+  font-family: "JetBrains Mono", ui-monospace, Menlo, monospace;
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #8E8C87;
 }
-
-.error-404-content .targz-image {
-  max-width: 400px;
-  width: 100%;
-  height: auto;
-  margin: 2rem auto;
+.e404-mark {
   display: block;
+  width: min(560px, 86vw);
+  height: auto;
+  margin: 0 auto 1.6rem;
+  image-rendering: pixelated;
 }
-
-.error-404-content p {
-  font-size: 1.5rem;
-  margin: 1rem 0;
-  color: #ccc;
+/* plain fallback until (or if) the glitch draws */
+.e404-fallback {
+  margin: 0 0 1.6rem;
+  font-family: "Knewave", "PT Serif", Georgia, serif;
+  font-size: clamp(6rem, 22vw, 11rem);
+  line-height: 1;
+  color: #121212;
 }
-
-.error-404-content a {
-  color: white;
+.e404.is-drawn .e404-fallback { display: none; }
+.e404:not(.is-drawn) .e404-mark { display: none; }
+.e404 h1 {
+  margin: 0 0 0.6rem;
+  font-family: "PT Serif", Georgia, serif;
+  font-weight: 700;
+  font-size: clamp(1.6rem, 4vw, 2.2rem);
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  color: #121212;
+}
+.e404-s {
+  margin: 0 0 2rem;
+  font-size: 0.95rem;
+  color: #55535C;
+}
+.e404-go {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.8rem 1.6rem;
+}
+.e404-go a {
+  font-family: "JetBrains Mono", ui-monospace, Menlo, monospace;
+  font-size: 0.75rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #121212 !important;
   text-decoration: underline;
-  font-size: 1.2rem;
-  margin-top: 2rem;
-  display: inline-block;
+  text-underline-offset: 5px;
 }
-
-.error-404-content a:hover {
-  color: #ddd;
-}
+.e404-go a:hover { text-decoration-thickness: 2px; }
 </style>
 
-<div class="error-404-page">
-  <div class="error-404-content">
-    <h1>Oups !</h1>
-    <img src="{{ '/assets/images/footer-targz.webp' | relative_url }}" alt="Targz" class="targz-image" />
-    <p>404 page not found</p>
+<section class="e404">
+  <p class="e404-k">Error 404</p>
+  <canvas class="e404-mark" id="e404-mark" aria-hidden="true"></canvas>
+  <p class="e404-fallback" aria-hidden="true">404</p>
+  <h1>Not the plot you're looking for.</h1>
+  <p class="e404-s">This page isn't here. Maybe it never was.</p>
+  <div class="e404-go">
+    <a href="{{ '/' | relative_url }}">Back to the work →</a>
+    <a href="{{ '/hello/' | relative_url }}">Say hi →</a>
   </div>
-</div>
+</section>
 
+<script>
+/* Draws once targz.js (footer) and the Knewave font are in. Three cuts with different
+   channel shifts, swapped at random intervals so the number twitches like a bad signal. */
+window.addEventListener('load', function () {
+  var cv = document.getElementById('e404-mark');
+  if (!cv || typeof TARGZ === 'undefined' || !document.fonts) return;
+  document.fonts.load('400 300px Knewave').then(function () {
+    if (!document.fonts.check('400 300px Knewave')) return;
+    var cuts = [6, 14, 24].map(function (shift) {
+      return TARGZ.text('404', { font: 'Knewave', weight: 400, size: 300, ink: '#121212',
+                                 base: '#FFFFFF', shift: shift, pixel: 8, blur: 0, scan: 0,
+                                 clip: 'spread' });
+    });
+    cv.width = cuts[0].width; cv.height = cuts[0].height;
+    var ctx = cv.getContext('2d');
+    function draw(i) { ctx.clearRect(0, 0, cv.width, cv.height); ctx.drawImage(cuts[i], 0, 0); }
+    draw(1);
+    cv.closest('.e404').classList.add('is-drawn');
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    (function twitch() {
+      draw(Math.random() < 0.7 ? 0 : 2);
+      setTimeout(function () { draw(1); setTimeout(twitch, 900 + Math.random() * 2200); },
+                 80 + Math.random() * 120);
+    })();
+  });
+});
+</script>

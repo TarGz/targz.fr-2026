@@ -6,9 +6,65 @@ layout: base
 <br/>
 
 <hgroup style="text-align: center">
-    <h2>Hello, I'm Targz</h2>
+    <h2 class="hero-glitch">Hello, I'm Targz</h2>
     <p>A pen plotting artist inspired by Op Art</p>
 </hgroup>
+
+<script>
+/* Hero glitch: two pixelated cuts of the title, drawn with TARGZ (loaded by the footer) in the
+   title's own font, size and colour, flashed over it twice: at load and 3 s later. */
+window.addEventListener('load', function () {
+  var h = document.querySelector('.hero-glitch');
+  if (!h || typeof TARGZ === 'undefined' || !document.fonts) return;
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  // Living glitch, built on the charte "Titles glitch" > Title card (PT Serif 700 at 84 px,
+  // pixel 4, shift 4, fringe outside, white ground). Every frame of a burst is redrawn with
+  // fresh random shift / pixel and a few horizontal slices torn sideways, so no two frames
+  // (and no two bursts) are the same. Two bursts: at load, then 3 s later. Then it rests.
+  var size = parseFloat(getComputedStyle(h).fontSize);
+  var txt = h.textContent.trim();
+  document.fonts.load('700 84px "PT Serif"').then(function () {
+    if (!document.fonts.check('700 84px "PT Serif"')) return;
+    var k = size / 84;
+    var view = document.createElement('canvas');
+    var vx = view.getContext('2d');
+    h.appendChild(view);
+    function rnd(a, b) { return a + Math.random() * (b - a); }
+    function frame(intensity) {
+      var cut = TARGZ.text(txt, { font: 'PT Serif', weight: 700, size: 84, ink: '#121212',
+                                  base: '#FFFFFF', blur: 0, scan: 0, erode: 0, clip: 'spread',
+                                  pixel: Math.round(rnd(3.5, 4.5 + intensity)),
+                                  shift: Math.round(rnd(3, 4 + intensity * 2)) });
+      if (view.width !== cut.width || view.height !== cut.height) {
+        view.width = cut.width; view.height = cut.height;
+        view.style.width = Math.round(cut.width * k) + 'px';
+        view.style.height = Math.round(cut.height * k) + 'px';
+      }
+      vx.fillStyle = '#FFFFFF'; vx.fillRect(0, 0, view.width, view.height);
+      vx.drawImage(cut, 0, 0);
+      // tear a few horizontal slices sideways
+      var n = Math.round(rnd(0, 1 + intensity * 2));
+      for (var t = 0; t < n; t++) {
+        var y = Math.round(rnd(0, view.height - 8)), hh = Math.round(rnd(4, 6 + intensity * 8));
+        var dx = Math.round(rnd(-1, 1) * (2 + intensity * 5));
+        vx.drawImage(cut, 0, y, view.width, hh, dx, y, view.width, hh);
+      }
+    }
+    function burst(ms) {
+      var t0 = performance.now();
+      h.classList.add('is-glitching');
+      (function step() {
+        var p = (performance.now() - t0) / ms;
+        if (p >= 1) { h.classList.remove('is-glitching'); return; }
+        frame(Math.sin(p * Math.PI));            // swells then settles
+        setTimeout(step, rnd(50, 110));
+      })();
+    }
+    setTimeout(function () { burst(rnd(600, 900)); }, 300);
+    setTimeout(function () { burst(rnd(500, 800)); }, 3300);
+  });
+});
+</script>
 
 <section class="home-grid">
     {% for post in site.posts %} {% if post.category == "portfolio" %}

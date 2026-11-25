@@ -6,15 +6,10 @@ keywords: pen plotting commissions, custom algorithmic art, commissioned generat
 permalink: /commissions/
 image: /assets/images/targz.webp
 ---
-<br/>
-<hgroup style="text-align: center">
-  <h2>Commissions</h2>
-  <p><small>A selection of my last pen plotter commissions</small></p>
-</hgroup>
-<br/>
-<br/>
-<br/>
-
+<header class="list-head">
+  <h1>Commissions</h1>
+  <p>Renault, Cayo, private walls. Made to order.</p>
+</header>
 <script src="{{ '/assets/js/hz.js' | relative_url }}" defer></script>
 
 <section class="home-grid commissions-grid">

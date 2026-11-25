@@ -7,22 +7,17 @@ permalink: /bits/
 image: /assets/images/targz.webp
 ---
 
-<br>
-<hgroup style="text-align: center">
-  <h2>Bits & Experiments</h2>
-  <p>A selection of my other work, from Lego<br/> to digital projects and NFT series.</p>
-</hgroup>
-<br>
-<br>
-<br>
-
+<header class="list-head">
+  <h1>Bits &amp; Experiments</h1>
+  <p>Lego, NFTs, old code. Before and around the plotter.</p>
+</header>
 
 <section class="home-grid bits-grid">
     {% for post in site.posts %} {% if post.category == "bits" %}
     <article class="home-item">
         <a href="{{ post.url | relative_url }}">
             <img src="{{ post.image | relative_url }}" alt="{{ post.title }}" />
-            <p>{{ post.title }}</p>
+            <p class="list-cap"><span class="list-cap-t">{{ post.title }}</span><span class="list-cap-l">{{ post.date | date: "%Y" }}</span></p>
         </a>
     </article>
     {% endif %} {% endfor %}

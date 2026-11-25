@@ -11,7 +11,7 @@ snippet. {% endcomment %}
 <link rel="stylesheet" href="{{ '/assets/css/hello.css' | relative_url }}?v={{ site.time | date: '%s' }}">
 {% endif %}
 
-{% if page.url == '/exhibitions/' or page.url == '/commissions/' %}
+{% if page.url == '/' or page.url == '/exhibitions/' or page.url == '/commissions/' or page.url == '/bits/' or page.url == '/404.html' %}
 {%- comment -%}Charte type for the list captions: PT Serif title, JetBrains Mono label.{%- endcomment -%}
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>

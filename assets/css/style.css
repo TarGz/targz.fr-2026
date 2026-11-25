@@ -853,8 +853,32 @@ article .compact-code pre {
    white margins), but these are full-bleed photos, so each caption needs air before
    the next row or it sits on the photo below. */
 .exhibitions-grid,
-.commissions-grid {
+.commissions-grid,
+.bits-grid {
   row-gap: 3rem;
+}
+
+/* List page header (exhibitions, commissions, bits): charte type, real spacing instead of <br>s */
+.list-head {
+  margin: 3rem auto 3.5rem;
+  text-align: center;
+}
+.list-head h1 {
+  margin: 0 0 0.6rem;
+  font-family: "PT Serif", Georgia, serif;
+  font-weight: 700;
+  font-size: clamp(2rem, 5vw, 2.8rem);
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+  color: #121212;
+}
+.list-head p {
+  margin: 0;
+  font-family: "JetBrains Mono", ui-monospace, Menlo, monospace;
+  font-size: 0.75rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #8E8C87;
 }
 
 /* Commissions page: invitation block. hz.js draws a glitched, skewed black silhouette
@@ -913,7 +937,8 @@ article .compact-code pre {
 /* Caption in the charte type, same as /hello: PT Serif title, JetBrains Mono label.
    Left-aligned to the photo's edge (the photo is 90% wide, centred). */
 .exhibitions-grid .home-item p.list-cap,
-.commissions-grid .home-item p.list-cap {
+.commissions-grid .home-item p.list-cap,
+.bits-grid .home-item p.list-cap {
   width: 90%;
   margin: 0.85rem auto 0;
   display: flex;
@@ -1460,3 +1485,23 @@ body.nav-active nav {
 .social-link svg { fill: currentColor; }
 .social-link img { filter: brightness(0) invert(1); }
 
+
+/* Home hero "Hello, I'm Targz": at load and 3 s later, a pixelated, channel-split cut of the title
+   (drawn by the script in _layouts/home.html with the charte glitch) flashes over the text
+   for a split second. The real text stays for search and screen readers. Off for reduced motion. */
+.hero-glitch {
+  position: relative;
+  font-family: "PT Serif", Georgia, serif;
+  font-weight: 700;
+}
+.hero-glitch canvas {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  image-rendering: pixelated;
+  visibility: hidden;
+}
+.hero-glitch.is-glitching { color: transparent !important; }
+.hero-glitch.is-glitching canvas { visibility: visible; }

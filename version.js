@@ -1,6 +1,16 @@
-const VERSION = "1.32.0";
+const VERSION = "1.33.0";
 
 const CHANGELOG = [
+  {
+    version: "1.33.0",
+    date: "2026-11-25",
+    changes: [
+      "Glitched 404: Knewave 404 through the charte glitch, twitching; new copy and links",
+      "Navbar logo replaced by the glitched @ griffe (logo-griffe.webp)",
+      "Home title: living glitch bursts at load and 3 s later (charte Title card look, PT Serif)",
+      "Bits: charte captions and row spacing; exhibitions/commissions/bits get a PT Serif header with a mono line"
+    ]
+  },
   {
     version: "1.32.0",
     date: "2026-11-25",
