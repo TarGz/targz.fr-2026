@@ -1,6 +1,16 @@
-const VERSION = "1.31.0";
+const VERSION = "1.32.0";
 
 const CHANGELOG = [
+  {
+    version: "1.32.0",
+    date: "2026-11-25",
+    changes: [
+      "/hello: 01/02/03 replaced by glitched icons (frame, bag, person) and a glitched arrow",
+      "/hello: Work with me card loses its subtitle; form copy says wild ideas; /hello/#work opens the form",
+      "Exhibitions and commissions: row spacing, captions in PT Serif with a JetBrains Mono label (location / year)",
+      "Commissions: glitched 'Your idea. My plotter.' block at the bottom, linking to the form"
+    ]
+  },
   {
     version: "1.31.0",
     date: "2026-11-25",

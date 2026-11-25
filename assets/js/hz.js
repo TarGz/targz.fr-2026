@@ -31,7 +31,7 @@
     pts.forEach(function (p, i) { i ? ctx.lineTo(p[0], p[1]) : ctx.moveTo(p[0], p[1]); });
     ctx.closePath();
     // on a white page the silhouette is ink on paper, like the mark; on black it's the card's grey
-    var light = !!wrap.closest('.hz-reach--light');
+    var light = !!wrap.closest('.hz-reach--light, [data-glitch-light]');
     var ink = light ? '#121212' : '#F4F3F1', base = light ? '#FFFFFF' : '#0B0B0D';
     ctx.fillStyle = ink;
     ctx.fill();
@@ -71,17 +71,26 @@
                                   ink: lightPage ? '#121212' : '#FFFFFF', base: lightPage ? '#FFFFFF' : '#0B0B0D' });
     var mail = document.querySelector('.hz-reach .hz-mail');
     if (mail) svgGlitch(mail, { pad: 6, stroke: 2, scale: 3, pixel: 2, shift: 2, ink: '#FFFFFF', base: '#0B0B0D' });
+    // the Portfolio / Shop / About icons: same treatment as the envelope, white on the black rows
+    // pushed harder than the envelope: chunkier blocks, wider channel split
+    document.querySelectorAll('.hz-go .hz-row-ico, .hz-go .hz-row-arrow').forEach(function (svg) {
+      svgGlitch(svg, { pad: 7, stroke: 2, scale: 3, pixel: 4, shift: 4, ink: '#FFFFFF', base: '#0B0B0D' });
+    });
     if (chev) svgGlitch(chev, { pad: 6, stroke: 3, pixel: 3, shift: 2, ink: '#121212', base: '#F4F3F1' });
-    if (!wrap) return;
-    cardGlitch(wrap);
-    // the card grows when the form opens: redraw the silhouette to fit
-    if (window.ResizeObserver) {
-      var last = wrap.offsetHeight + 'x' + wrap.offsetWidth;
-      new ResizeObserver(function () {
-        var now = wrap.offsetHeight + 'x' + wrap.offsetWidth;
-        if (now !== last) { last = now; cardGlitch(wrap); }
-      }).observe(wrap);
-    }
+    // the Work with me card, and the commissions page block (.cm-block)
+    var cards = [].slice.call(document.querySelectorAll('.cm-block'));
+    if (wrap) cards.unshift(wrap);
+    cards.forEach(function (el) {
+      cardGlitch(el);
+      // the card grows when the form opens (or the page reflows): redraw to fit
+      if (window.ResizeObserver) {
+        var last = el.offsetHeight + 'x' + el.offsetWidth;
+        new ResizeObserver(function () {
+          var now = el.offsetHeight + 'x' + el.offsetWidth;
+          if (now !== last) { last = now; cardGlitch(el); }
+        }).observe(el);
+      }
+    });
   })();
 })();
 
@@ -106,6 +115,8 @@ document.addEventListener('DOMContentLoaded', function () {
     workPanel.hidden = !open;
     if (open) workPanel.querySelector('input').focus({ preventScroll: true });
   });
+  // /hello/#work (the commissions page banner) lands with the form already open
+  if (workBtn && location.hash === '#work') workBtn.click();
 
   document.querySelectorAll('[data-target]').forEach(function (link) {
     link.addEventListener('click', function () {

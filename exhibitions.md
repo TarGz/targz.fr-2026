@@ -21,7 +21,7 @@ image: /assets/images/targz.webp
     <article class="home-item">
         <a href="{{ post.url | relative_url }}">
             <img src="{{ post.image | relative_url }}" alt="{{ post.title }}" />
-            <p>{{ post.title }}{% if post.location %} • {{ post.location }}{% endif %}</p>
+            <p class="list-cap"><span class="list-cap-t">{{ post.title }}</span>{% if post.location %}<span class="list-cap-l">{{ post.location }}</span>{% endif %}</p>
         </a>
     </article>
     {% endif %} {% endfor %}

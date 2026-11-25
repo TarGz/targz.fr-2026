@@ -147,11 +147,30 @@
 }
 
 .hz-row b {
-  font-family: var(--mono);
-  font-weight: 400;
-  font-size: 0.7rem;
-  color: #8E8C87;
+  display: flex;
+  align-items: center;
 }
+/* row icon: SVG fallback, swapped for a glitched canvas by hz.js */
+.hz-row-ico {
+  width: 22px;
+  height: 22px;
+  fill: none;
+  stroke: #fff;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.hz-row-arrow {
+  width: 22px;
+  height: 22px;
+  fill: none;
+  stroke: #fff;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  display: block;
+}
+canvas.hz-row-ico, canvas.hz-row-arrow { image-rendering: auto; }
 
 .hz-row span {
   font-family: var(--serif);

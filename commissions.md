@@ -15,13 +15,21 @@ image: /assets/images/targz.webp
 <br/>
 <br/>
 
+<script src="{{ '/assets/js/hz.js' | relative_url }}" defer></script>
+
 <section class="home-grid commissions-grid">
     {% for post in site.posts %} {% if post.category == "commissions" %}
     <article class="home-item">
         <a href="{{ post.url | relative_url }}">
             <img src="{{ post.image | relative_url }}" alt="{{ post.title }}" />
-            <p>{{ post.title }}</p>
+            <p class="list-cap"><span class="list-cap-t">{{ post.title }}</span><span class="list-cap-l">{{ post.date | date: "%Y" }}</span></p>
         </a>
     </article>
     {% endif %} {% endfor %}
 </section>
+
+<div class="cm-block-wrap"><aside class="cm-block" data-glitch-light>
+  <p class="cm-block-t">Your idea. My plotter.</p>
+  <p class="cm-block-s">Art pieces, design, generative systems, brand work, strange briefs. Tell me what you have in mind.</p>
+  <a class="cm-block-btn" href="{{ '/hello/#work' | relative_url }}">Start the conversation <span aria-hidden="true">→</span></a>
+</aside></div>
