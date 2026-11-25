@@ -1,21 +1,26 @@
 #!/usr/bin/env python3
 """
-Create portfolio posts from image folders in portfolio_drop/.
+Create posts from image folders dropped in the drop folders:
 
-Scans portfolio_drop/ for folders named YYYY-MM-DD-artwork-name/, then for each:
+    portfolio_drop/    -> _posts/portfolio/    (+ mobile/tablet variants of the preview)
+    exhibitions_drop/  -> _posts/exhibitions/
+    commissions_drop/  -> _posts/commissions/
+    bits_drop/         -> _posts/bits/
+
+Scans each drop folder for folders named YYYY-MM-DD-slug/, then for each:
   1. Extracts the date and slug from the folder name
   2. Converts/resizes all images to 1200px-wide webp
   3. Names them: {slug}-preview.webp, {slug}-02.webp, {slug}-03.webp, ...
   4. Creates the markdown post with frontmatter and image references
-  5. Generates mobile (576px) and tablet (992px) variants of the preview
-  6. Removes the processed folder from portfolio_drop/
+  5. Portfolio only: generates mobile (576px) and tablet (992px) variants of the preview
+  6. Removes the processed folder from its drop folder (sources are not kept)
 
 Usage:
-    python3 new_artwork.py                     # Process all folders in portfolio_drop/
+    python3 new_artwork.py                     # Process every drop folder
     python3 new_artwork.py --dry-run            # Preview without writing files
 
-Drop your image folders into portfolio_drop/ with the format YYYY-MM-DD-slug/
-(e.g. portfolio_drop/2024-03-13-particle-asymmetry/).
+Drop your image folders into the right drop folder with the format YYYY-MM-DD-slug/
+(e.g. portfolio_drop/2024-03-13-particle-asymmetry/, exhibitions_drop/2026-05-20-rouen-national-arts/).
 Images are sorted by filename. The first one becomes the preview.
 """
 
@@ -29,11 +34,15 @@ import sys
 import tempfile
 from datetime import date
 
-DROP_DIR = "portfolio_drop"
-PORTFOLIO_DIR = "assets/images/portfolio"
+# drop folder -> category. Images go to assets/images/{category}/, posts to _posts/{category}/.
+DROPS = {
+    "portfolio_drop": "portfolio",
+    "exhibitions_drop": "exhibitions",
+    "commissions_drop": "commissions",
+    "bits_drop": "bits",
+}
 MOBILE_DIR = "assets/images/mobile"
 TABLET_DIR = "assets/images/tablet"
-POSTS_DIR = "_posts/portfolio"
 
 MAX_WIDTH = 1200
 MOBILE_WIDTH = 576
@@ -152,7 +161,7 @@ def find_images(folder):
 
 def get_existing_count(slug, date_slug):
     """Count existing numbered images for a slug (to continue numbering)."""
-    dest_dir = os.path.join(PORTFOLIO_DIR, date_slug)
+    dest_dir = os.path.join("assets/images/portfolio", date_slug)
     if not os.path.isdir(dest_dir):
         return 0
     count = 0
@@ -163,9 +172,9 @@ def get_existing_count(slug, date_slug):
     return count
 
 
-def process_images(images, slug, date_slug, dry_run=False, start_index=0):
+def process_images(images, slug, date_slug, category, dry_run=False, start_index=0):
     """Convert and place images. Returns list of generated filenames."""
-    dest_dir = os.path.join(PORTFOLIO_DIR, date_slug)
+    dest_dir = os.path.join("assets/images", category, date_slug)
     generated = []
 
     for i, src in enumerate(images):
@@ -191,7 +200,7 @@ def process_images(images, slug, date_slug, dry_run=False, start_index=0):
 
 def generate_responsive(slug, date_slug, dry_run=False):
     """Generate mobile and tablet variants of the preview image."""
-    preview = os.path.join(PORTFOLIO_DIR, date_slug, f"{slug}-preview.webp")
+    preview = os.path.join("assets/images/portfolio", date_slug, f"{slug}-preview.webp")
     if not os.path.exists(preview) and not dry_run:
         print("  No preview found, skipping responsive variants")
         return
@@ -212,10 +221,56 @@ def generate_responsive(slug, date_slug, dry_run=False):
         convert_to_webp(preview, tablet_dst, TABLET_WIDTH)
 
 
-def create_post(title, slug, date_slug, filenames, post_date=None, dry_run=False):
+def front_matter(category, title, post_date, image):
+    """Front matter per category, matching the existing posts. Empty fields are for the
+    artist to fill by hand; never invent them."""
+    if category == "portfolio":
+        return f"""layout: post
+title: "{title}"
+seo-title: "{title} - Algorithmic Pen Plotted Art | Targz"
+description: ""
+date: {post_date}
+category: portfolio
+image: {image}
+ink: ""
+pen: ""
+frame: ""
+size: ""
+support: """""
+    if category == "exhibitions":
+        return f"""layout: post
+title: "{title}"
+date: {post_date}
+category: exhibitions
+location: ""
+tags: [exhibition]
+description: ""
+image: {image}"""
+    if category == "commissions":
+        return f"""layout: post
+title: "{title}"
+seo-title: "{title} | Targz"
+description: ""
+date: {post_date}
+category: commissions
+tags: [commission]
+image: {image}
+client: ""
+project_type: """""
+    return f"""layout: post
+title: "{title}"
+seo-title: "{title} - Digital Art & Experiments | Targz"
+description: ""
+date: {post_date}
+category: bits
+tags: [digital-art, experimental]
+image: {image}"""
+
+
+def create_post(title, slug, date_slug, filenames, category, post_date=None, dry_run=False):
     """Create the markdown post file."""
     post_date = post_date or date.today().isoformat()
-    post_path = os.path.join(POSTS_DIR, f"{post_date}-{slug}.md")
+    post_path = os.path.join("_posts", category, f"{post_date}-{slug}.md")
 
     if os.path.exists(post_path):
         print(f"  Post already exists: {post_path}")
@@ -224,23 +279,13 @@ def create_post(title, slug, date_slug, filenames, post_date=None, dry_run=False
     # Build image markdown for extra images (not the preview)
     extra_images = [f for f in filenames if "preview" not in f]
     image_lines = "\n".join(
-        f"![]({{{{ site.baseurl }}}}/assets/images/portfolio/{date_slug}/{f})"
+        f"![]({{{{ site.baseurl }}}}/assets/images/{category}/{date_slug}/{f})"
         for f in extra_images
     )
+    image = f"/assets/images/{category}/{date_slug}/{slug}-preview.webp"
 
     content = f"""---
-layout: post
-title: "{title}"
-seo-title: "{title} - Algorithmic Pen Plotted Art | Targz"
-description: ""
-date: {post_date}
-category: portfolio
-image: /assets/images/portfolio/{date_slug}/{slug}-preview.webp
-ink: ""
-pen: ""
-frame: ""
-size: ""
-support: ""
+{front_matter(category, title, post_date, image)}
 ---
 
 
@@ -259,7 +304,7 @@ support: ""
 def add_images_to_post(slug, date_slug, filenames, dry_run=False):
     """Append new image references to an existing post."""
     # Find the post file
-    pattern = os.path.join(POSTS_DIR, f"*-{slug}.md")
+    pattern = os.path.join("_posts/portfolio", f"*-{slug}.md")
     matches = glob.glob(pattern)
     if not matches:
         print(f"  No post found for slug: {slug}")
@@ -277,7 +322,7 @@ def add_images_to_post(slug, date_slug, filenames, dry_run=False):
             f.write(image_lines + "\n")
 
 
-def process_folder(image_folder, dry_run=False):
+def process_folder(image_folder, category, dry_run=False):
     """Process a single image folder: convert images, create post, generate responsive."""
     folder_date, slug = parse_folder_name(image_folder)
     if not folder_date or not slug:
@@ -288,7 +333,7 @@ def process_folder(image_folder, dry_run=False):
     title = slug_to_title(slug)
 
     # Check if post already exists
-    post_path = os.path.join(POSTS_DIR, f"{folder_date}-{slug}.md")
+    post_path = os.path.join("_posts", category, f"{folder_date}-{slug}.md")
     if os.path.exists(post_path):
         print(f"  SKIP (post exists): {post_path}")
         return False
@@ -298,19 +343,20 @@ def process_folder(image_folder, dry_run=False):
         print(f"  SKIP (no images): {os.path.basename(image_folder)}")
         return False
 
-    print(f"\n  {title}")
+    print(f"\n  {title}  [{category}]")
     print(f"  Slug: {slug} | Date: {folder_date} | Images: {len(images)}\n")
 
     print("  Processing images:")
-    filenames = process_images(images, slug, date_slug, dry_run)
+    filenames = process_images(images, slug, date_slug, category, dry_run)
 
-    print("\n  Generating responsive variants:")
-    generate_responsive(slug, date_slug, dry_run)
+    if category == "portfolio":
+        print("\n  Generating responsive variants:")
+        generate_responsive(slug, date_slug, dry_run)
 
     print("\n  Creating post:")
-    create_post(title, slug, date_slug, filenames, post_date=folder_date, dry_run=dry_run)
+    create_post(title, slug, date_slug, filenames, category, post_date=folder_date, dry_run=dry_run)
 
-    # Clean up: remove processed folder from portfolio_drop/
+    # Clean up: remove the processed folder (the sources) from the drop folder
     if not dry_run:
         shutil.rmtree(image_folder)
         print(f"\n  Cleaned up: {image_folder}")
@@ -322,35 +368,34 @@ def process_folder(image_folder, dry_run=False):
 
 def main():
     parser = argparse.ArgumentParser(
-        description="Process image folders in portfolio_drop/ and create portfolio posts."
+        description="Process image folders in the drop folders and create posts."
     )
     parser.add_argument("--dry-run", action="store_true", help="Preview without writing files")
     args = parser.parse_args()
 
-    if not os.path.isdir(DROP_DIR):
-        print(f"Error: {DROP_DIR}/ directory not found. Create it and drop your image folders there.")
-        sys.exit(1)
+    # Find all YYYY-MM-DD-slug/ folders in every drop folder
+    jobs = []
+    for drop, category in DROPS.items():
+        if not os.path.isdir(drop):
+            continue
+        for name in sorted(os.listdir(drop)):
+            path = os.path.join(drop, name)
+            if os.path.isdir(path) and re.match(r'^\d{4}-\d{2}-\d{2}-.+$', name):
+                jobs.append((path, category))
 
-    # Find all YYYY-MM-DD-slug/ folders in portfolio_drop/
-    folders = []
-    for name in sorted(os.listdir(DROP_DIR)):
-        path = os.path.join(DROP_DIR, name)
-        if os.path.isdir(path) and re.match(r'^\d{4}-\d{2}-\d{2}-.+$', name):
-            folders.append(path)
-
-    if not folders:
-        print(f"No folders found in {DROP_DIR}/")
-        print(f"Drop image folders named YYYY-MM-DD-slug/ (e.g. 2024-03-13-particle-asymmetry/)")
+    if not jobs:
+        print("No folders found in " + ", ".join(d + "/" for d in DROPS))
+        print("Drop image folders named YYYY-MM-DD-slug/ (e.g. 2024-03-13-particle-asymmetry/)")
         sys.exit(0)
 
     if args.dry_run:
         print("DRY RUN — no files will be written\n")
 
-    print(f"Found {len(folders)} folder(s) in {DROP_DIR}/")
+    print(f"Found {len(jobs)} folder(s)")
 
     created = 0
-    for folder in folders:
-        if process_folder(folder, args.dry_run):
+    for folder, category in jobs:
+        if process_folder(folder, category, args.dry_run):
             created += 1
 
     print(f"\n{'=' * 40}")

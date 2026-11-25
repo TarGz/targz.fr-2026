@@ -1,6 +1,14 @@
-const VERSION = "1.33.0";
+const VERSION = "1.34.0";
 
 const CHANGELOG = [
+  {
+    version: "1.34.0",
+    date: "2026-11-25",
+    changes: [
+      "new_artwork.py: drop folders for exhibitions, commissions and bits (exhibitions_drop/, commissions_drop/, bits_drop/), 1200px webp, per-category front matter, sources deleted",
+      "CLAUDE.md documents the four drop folders"
+    ]
+  },
   {
     version: "1.33.0",
     date: "2026-11-25",

@@ -91,7 +91,15 @@ height changed.
 
 Requires `cwebp` (from the `webp` package) and macOS `sips` on the PATH.
 
-Use `portfolio_drop/` workflow:
+Use the drop folders. Same workflow for every category; sources are deleted once processed:
+
+| drop folder | post goes to | images go to |
+|---|---|---|
+| `portfolio_drop/` | `_posts/portfolio/` | `assets/images/portfolio/` (+ mobile/tablet variants) |
+| `exhibitions_drop/` | `_posts/exhibitions/` | `assets/images/exhibitions/` |
+| `commissions_drop/` | `_posts/commissions/` | `assets/images/commissions/` |
+| `bits_drop/` | `_posts/bits/` | `assets/images/bits/` |
+
 
 1. Drop a folder named `YYYY-MM-DD-slug/` into `portfolio_drop/` with images inside (png, jpg, tiff, heic, bmp, webp). The slug becomes the post title, title-cased ("The-Last-Brain-Cell" becomes "The Last Brain Cell").
 2. Images are sorted by filename and the first one becomes the preview/thumbnail. Prefix them `1-`, `2-`, `3-` to control the order.
@@ -101,7 +109,8 @@ Use `portfolio_drop/` workflow:
 
 ## Scripts
 
-- `new_artwork.py` — Scan `portfolio_drop/` and create portfolio posts with responsive images
+- `new_artwork.py` — Scan the four drop folders (`portfolio_drop/`, `exhibitions_drop/`, `commissions_drop/`,
+  `bits_drop/`), convert images to 1200px webp, create the post, delete the sources
 - `generate_responsive_images.py` — Rebuild mobile (576px) / tablet (992px) variants from every
   `portfolio/<slug>/<slug>-preview.webp`. Writes to `mobile|tablet/portfolio/<slug>/<name>.webp`,
   which is the nested path `_layouts/home.html` builds its `<source srcset>` from. Only touches
