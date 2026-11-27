@@ -1,6 +1,13 @@
-const VERSION = "1.35.0";
+const VERSION = "1.35.1";
 
 const CHANGELOG = [
+  {
+    version: "1.35.1",
+    date: "2026-11-27",
+    changes: [
+      "Plasma Convection Center, Left, Right: framed mockup and triptych view added to each post"
+    ]
+  },
   {
     version: "1.35.0",
     date: "2026-11-25",

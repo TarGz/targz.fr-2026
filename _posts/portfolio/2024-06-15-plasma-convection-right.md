@@ -16,3 +16,5 @@ support: "Bristol"
 ---
 The dance of charged matter
 
+![]({{ site.baseurl }}/assets/images/portfolio/2024-06-15-plasma-convection-right/plasma-convection-right-01.webp)
+![]({{ site.baseurl }}/assets/images/portfolio/2024-06-15-plasma-convection-right/plasma-convection-right-02.webp)
